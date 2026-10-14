@@ -94,11 +94,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (i > 50) pairCount = 5;
       if (i > 75) pairCount = 6;
 
-      const pairs = [];
-      for (let p = 0; p < pairCount; p++) {
-        const r1 = Math.floor((p * 2) / size), c1 = (p * 2) % size;
-        const r2 = size - 1 - r1, c2 = size - 1 - c1;
-        pairs.push([r1, c1, r2, c2]);
+      let pairs = [];
+      if (i === 1) {
+        pairs = [[0, 0, 4, 2], [0, 4, 4, 0]];
+      } else if (i === 2) {
+        pairs = [[0, 0, 0, 4], [4, 0, 4, 4]];
+      } else {
+        for (let p = 0; p < pairCount; p++) {
+          const r1 = (p * 2) % size, c1 = Math.floor(p * 3) % size;
+          const r2 = (size - 1 - r1 + p) % size, c2 = (size - 1 - c1) % size;
+          if (r1 === r2 && c1 === c2) {
+            pairs.push([r1, c1, (r2 + 1) % size, c2]);
+          } else {
+            pairs.push([r1, c1, r2, c2]);
+          }
+        }
       }
 
       list.push({
@@ -117,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let levelIndex = 0, paths = {}, active = null, moves = 0, hints = 3, unlocked = 1, completed = {};
   let soundOn = true, audioCtx = null;
 
-  const saveKey='athar-puzzle-v100-full';
+  const saveKey='athar-puzzle-v101';
   function loadSave(){try{const s=JSON.parse(localStorage.getItem(saveKey)||'{}');unlocked=Math.max(1,Math.min(LEVELS.length,s.unlocked||1));completed=s.completed||{};hints=s.hints==null?3:s.hints;}catch(e){}}
   function save(){try{localStorage.setItem(saveKey,JSON.stringify({unlocked,completed,hints}));}catch(e){}}
 

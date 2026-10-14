@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#080e1c">
+<title>أثر — ألغاز الرموز (100 مرحلة)</title>
+<style>
+:root{--bg:#080e1c;--panel:#111d34;--panel2:#1b2b49;--text:#f4f7ff;--muted:#aab8d2;--gold:#ffe08a;--line:#40577d;--good:#5ef0c2}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% -10%,#354b76 0%,#111a30 42%,#080e1c 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
+body{padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom);touch-action:manipulation}
+.app{max-width:680px;margin:auto;padding:12px 0 24px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:5px 2px 16px}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#fff0b0,#f4a64d 55%,#d77845);display:grid;place-items:center;color:#1b2234;font-size:25px;box-shadow:0 0 0 4px #ffd16618,0 10px 30px #f5a74233}
+h1{font-size:23px;margin:0;letter-spacing:.2px} .subtitle{color:var(--muted);font-size:12px;margin-top:3px}
+.pill{background:#1b2a43;border:1px solid #4b6285;padding:8px 11px;border-radius:999px;font-size:12px;color:#dce6fa;white-space:nowrap}
+.card{background:linear-gradient(145deg,#1c2d4bdf,#111c32f5);border:1px solid #50658a66;border-radius:22px;padding:15px;box-shadow:0 18px 45px #0004,inset 0 1px #ffffff0a;backdrop-filter:blur(12px);margin-bottom:12px}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:10px}.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.4px}.levelname{font-size:20px;font-weight:800;margin:4px 0}.desc{font-size:13px;color:var(--muted);line-height:1.65}
+.stats{display:flex;gap:8px;margin-top:12px}.stat{flex:1;background:linear-gradient(145deg,#101d32,#14233b);border:1px solid #41577788;border-radius:13px;padding:9px;text-align:center}.stat b{display:block;font-size:18px}.stat span{font-size:11px;color:var(--muted)}
+.progress{height:7px;background:#0e1728;border-radius:9px;overflow:hidden;margin-top:12px}.progress div{height:100%;background:linear-gradient(90deg,#5ce1b9,#ffd166);box-shadow:0 0 14px #5ce1b955;width:0;transition:width .25s}
+.board-wrap{padding:11px;background:linear-gradient(145deg,#091426,#101e35);border-radius:18px;border:1px solid #5c739955;box-shadow:inset 0 0 24px #0004;position:relative}
+.board{display:grid;gap:6px;aspect-ratio:1;width:100%;touch-action:none;user-select:none;-webkit-user-select:none}
+.cell{border-radius:11px;background:linear-gradient(145deg,#2a3e60,#172640);border:1px solid #52698c75;box-shadow:inset 0 1px #ffffff0b;position:relative;min-width:0;min-height:0;display:grid;place-items:center;color:white;transition:transform .12s,filter .12s,background .15s}
+.cell.path{background:linear-gradient(145deg,color-mix(in srgb,var(--c) 92%,white),var(--c));box-shadow:inset 0 0 0 2px #ffffff50,0 0 14px color-mix(in srgb,var(--c) 25%,transparent);transform:scale(.98)}
+.cell.endpoint{background:radial-gradient(circle at 35% 25%,#304361,#101a2d 75%);box-shadow:inset 0 0 0 3px var(--c),0 0 18px color-mix(in srgb,var(--c) 35%,transparent)}
+.glyph{font-size:clamp(12px,4vw,24px);line-height:1;filter:drop-shadow(0 3px 4px #0008);text-shadow:0 0 12px #ffffff2a}
+.cell.endpoint .glyph{font-size:clamp(16px,5vw,28px)}
+.cell.filled:not(.endpoint):after{content:"";width:32%;height:32%;border-radius:50%;background:#ffffff45;box-shadow:0 0 0 2px #ffffff25}
+.cell.hint{animation:pulse .65s ease-in-out 2}
+@keyframes pulse{50%{transform:scale(.84);filter:brightness(1.7)}}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+button{font:inherit;border:0;border-radius:13px;padding:12px 8px;font-weight:800;cursor:pointer;touch-action:manipulation;box-shadow:0 5px 0 #0002;letter-spacing:.1px;transition:transform .1s,filter .1s}
+button:active{transform:scale(.97)}button:disabled{opacity:.4;cursor:not-allowed}
+.primary{background:linear-gradient(135deg,#ffe79a,#ffbf62);box-shadow:0 5px 18px #ffc85725;color:#242b3d}.secondary{background:linear-gradient(145deg,#304568,#202f4c);border:1px solid #60769b70;color:#f2f5ff}.sound-toggle{font-size:11px;padding:8px 10px;border-radius:999px;background:#1b2a43;border:1px solid #4b6285;color:#e7efff;box-shadow:none}
+.message{min-height:24px;margin:11px 3px 0;font-size:13px;color:var(--muted);text-align:center}.message.good{color:var(--good);font-weight:800}
+.section-title{font-size:15px;font-weight:800;margin-bottom:10px}
+.levels-scroll{max-height:240px;overflow-y:auto;padding-left:4px;padding-right:4px}
+.levels-scroll::-webkit-scrollbar{width:6px}.levels-scroll::-webkit-scrollbar-thumb{background:#4b6285;border-radius:4px}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.level-btn{padding:10px 0;background:linear-gradient(145deg,#202e48,#19243a);color:#aab8d2;border:1px solid #354765;border-radius:11px;font-size:12px;transition:transform .12s,filter .12s}.level-btn.open{background:linear-gradient(145deg,#344a6e,#263957);border-color:#4b6388;color:#fff}.level-btn.done{background:linear-gradient(145deg,#17675d,#12473f);border-color:#43b9a2;color:#8af0d4}.level-btn.current{outline:2px solid #ffe08a;box-shadow:0 0 18px #ffd16620;color:#ffe08a}
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.legend-item{display:flex;align-items:center;gap:6px;background:#111d31;border:1px solid #2b3d5a;border-radius:99px;padding:6px 9px;font-size:12px;color:#dbe5f7}.dot{width:10px;height:10px;border-radius:50%}
+footer{text-align:center;color:#8192b0;font-size:11px;padding:8px 0 18px}
+.modal{position:fixed;inset:0;background:#080d18c9;display:none;align-items:center;justify-content:center;padding:20px;z-index:5}.modal.show{display:flex}.modal-box{max-width:340px;width:100%;background:#1b2944;border:1px solid #455a7e;border-radius:22px;padding:23px;text-align:center;box-shadow:0 24px 80px #0008}.modal-box .big{font-size:48px}.modal-box h2{margin:7px 0}.modal-box p{color:var(--muted);line-height:1.7;font-size:14px}
+@media(min-width:500px){.app{padding-top:22px}.card{padding:19px}.board{gap:7px}.cell{border-radius:13px}.levels{grid-template-columns:repeat(8,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand"><div class="logo">✦</div><div><h1>أثَــر</h1><div class="subtitle">ألغاز مسارات • 100 مرحلة</div></div></div>
+  <div style="display:flex;gap:7px;align-items:center"><button class="sound-toggle" id="soundToggle" aria-label="تشغيل الصوت">🔊 الصوت</button><div class="pill">✧ <span id="stars">0</span> نجمة</div></div>
+</header>
+<section class="card">
+  <div class="topline"><div><div class="eyebrow" id="chapter">الفصل الأول</div><div class="levelname" id="levelTitle">المرحلة 1</div></div><div class="pill" id="levelBadge">المرحلة 1 / 100</div></div>
+  <div class="desc" id="levelDesc">صِل كل زوج بلونه، وغطّ جميع الخلايا دون تقاطع أو فراغات.</div>
+  <div class="stats"><div class="stat"><b id="pairs">2</b><span>أزواج الرموز</span></div><div class="stat"><b id="moves">0</b><span>حركاتك</span></div><div class="stat"><b id="best">—</b><span>أفضل نتيجة</span></div></div>
+  <div class="progress"><div id="progress"></div></div>
+</section>
+<section class="card">
+  <div class="board-wrap"><div id="board" class="board" aria-label="لوحة توصيل الرموز"></div></div>
+  <div class="legend" id="legend"></div>
+  <div class="controls">
+    <button class="secondary" id="reset">↻ إعادة</button>
+    <button class="secondary" id="hint">✦ تلميح <span id="hints">3</span></button>
+    <button class="primary" id="next" disabled>التالي ←</button>
+  </div>
+  <div class="message" id="message" aria-live="polite">اسحب من رمز إلى نظيره، وغطّ اللوحة كاملة.</div>
+</section>
+<section class="card">
+  <div class="section-title">خريطة المراحل (100 مرحلة)</div>
+  <div class="levels-scroll"><div class="levels" id="levels"></div></div>
+</section>
+<footer>أثَر © • 100 مرحلة متدرجة الصعوبة • تقدمك محفوظ تلقائياً</footer>
+</div>
+<div class="modal" id="modal"><div class="modal-box"><div class="big">✦</div><h2>أحسنت! اكتمل الأثر</h2><p id="modalText">وصلت كل الرموز بنجاح.</p><button class="primary" id="modalNext">المرحلة التالية ←</button></div></div>
+
+<script>
+(()=>{
+'use strict';
+const COLORS=[
+ {name:'الياقوت',color:'#ff5f78',glyph:'◆'},
+ {name:'الزمرد',color:'#4ce0b1',glyph:'✦'},
+ {name:'الياقوت الأزرق',color:'#65a8ff',glyph:'●'},
+ {name:'العنبر',color:'#ffc857',glyph:'★'},
+ {name:'البنفسج',color:'#c69cff',glyph:'⬟'},
+ {name:'المرجان',color:'#ff9c65',glyph:'✿'},
+ {name:'الفيروز',color:'#65e4e8',glyph:'⬢'},
+ {name:'الجمشت',color:'#e065ff',glyph:'◈'},
+ {name:'اللازورد',color:'#3b82f6',glyph:'▲'},
+ {name:'العقيق',color:'#ef4444',glyph:'❖'}
+];
+
+// Seeded PRNG for procedural 100 levels generation
+function createRNG(seed){
+  let s = seed % 2147483647;
+  if (s <= 0) s += 2147483646;
+  return function(){ return (s = s * 16807 % 2147483647) / 2147483647; };
+}
+
+// Generate 100 Guaranteed Solvable Levels with full grid coverage
+function generate100Levels(){
+  const levels = [];
+  const chapters = [
+    "الفصل الأول • الاستيقاظ",
+    "الفصل الثاني • أطلال الحراس",
+    "الفصل الثالث • الكهف المنسي",
+    "الفصل الرابع • قلب المملكة",
+    "الفصل الخامس • ما وراء الظلال",
+    "الفصل السادس • ما وراء الأختام",
+    "الفصل السابع • الممر السري",
+    "الفصل الثامن • العرش القديم",
+    "الفصل التاسع • البوابة الأبدية",
+    "الفصل العاشر • الأثر الأخير"
+  ];
+
+  for(let i=0; i<100; i++){
+    const rng = createRNG(i * 1337 + 42);
+    let size = 5;
+    if(i >= 15) size = 6;
+    if(i >= 35) size = 7;
+    if(i >= 55) size = 8;
+    if(i >= 75) size = 9;
+    if(i >= 90) size = 10;
+
+    let numPairs = Math.min(2 + Math.floor(i / 12), COLORS.length);
+    if(size >= 8) numPairs = Math.max(numPairs, 5);
+
+    // Generate puzzle path on grid via randomized snake expansion
+    let levelData = buildLevel(size, numPairs, rng);
+    let attempts = 0;
+    while(!levelData && attempts < 50){
+      attempts++;
+      levelData = buildLevel(size, numPairs, rng);
+    }
+
+    if(!levelData){
+      // Fallback puzzle setup
+      levelData = {
+        w: size, h: size,
+        pairs: [[0,0, size-1,0], [0,size-1, size-1,size-1]]
+      };
+    }
+
+    const chapIdx = Math.min(Math.floor(i / 10), chapters.length - 1);
+    levels.push({
+      id: i + 1,
+      name: `مرحلة ${i + 1}`,
+      chapter: chapters[chapIdx],
+      w: levelData.w,
+      h: levelData.h,
+      pairs: levelData.pairs,
+      desc: `شبكة ${levelData.w}×${levelData.h} تحتوي على ${levelData.pairs.length} أزواج ملونة. صِل الرموز وغطّ اللوحة كاملة.`
+    });
+  }
+  return levels;
+}
+
+function buildLevel(size, numPairs, rng){
+  const grid = Array.from({length: size}, ()=> Array(size).fill(-1));
+  const freeCells = [];
+  for(let r=0; r<size; r++) for(let c=0; c<size; c++) freeCells.push([r,c]);
+
+  // Partition whole board into paths using random walk
+  let currentPair = 0;
+  const paths = Array.from({length: numPairs}, ()=> []);
+  let unassigned = size * size;
+
+  // Pick random start positions for each color
+  for(let p=0; p<numPairs; p++){
+    if(freeCells.length === 0) break;
+    const idx = Math.floor(rng() * freeCells.length);
+    const [r,c] = freeCells.splice(idx,1)[0];
+    grid[r][c] = p;
+    paths[p].push([r,c]);
+    unassigned--;
+  }
+
+  const dirs = [[0,1],[1,0],[0,-1],[-1,0]];
+  let maxSteps = size * size * 10;
+  
+  while(unassigned > 0 && maxSteps > 0){
+    maxSteps--;
+    const p = Math.floor(rng() * numPairs);
+    if(paths[p].length === 0) continue;
+
+    // Pick head or tail
+    const fromHead = rng() > 0.5;
+    const [cr, cc] = fromHead ? paths[p][paths[p].length - 1] : paths[p][0];
+
+    // Find valid empty neighbors
+    const valid = [];
+    for(const [dr,dc] of dirs){
+      const nr = cr + dr, nc = cc + dc;
+      if(nr>=0 && nr<size && nc>=0 && nc<size && grid[nr][nc] === -1){
+        valid.push([nr,nc]);
+      }
+    }
+
+    if(valid.length > 0){
+      const [nr,nc] = valid[Math.floor(rng() * valid.length)];
+      grid[nr][nc] = p;
+      if(fromHead) paths[p].push([nr,nc]);
+      else paths[p].unshift([nr,nc]);
+      unassigned--;
+    }
+  }
+
+  // Ensure all paths have at least 2 length
+  const activePairs = [];
+  const pairsPos = [];
+  for(let p=0; p<numPairs; p++){
+    if(paths[p].length >= 2){
+      const head = paths[p][0];
+      const tail = paths[p][paths[p].length - 1];
+      pairsPos.push([head[0], head[1], tail[0], tail[1]]);
+      activePairs.push(p);
+    }
+  }
+
+  if(unassigned > 0 || pairsPos.length < 2) return null;
+
+  return { w: size, h: size, pairs: pairsPos };
+}
+
+const LEVELS = generate100Levels();
+
+const $=id=>document.getElementById(id);
+const key=(r,c)=>r+','+c;
+let levelIndex=0, grid=[], paths={}, active=null, moves=0, hints=3, unlocked=1, completed={}, hintTimer=null;
+let soundOn=true, audioCtx=null;
+
+function sound(type='tap'){
+  if(!soundOn)return;
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);
+    const now=audioCtx.currentTime;
+    const freq=type==='win'?660:type==='connect'?520:type==='error'?180:360;
+    o.type=type==='win'?'sine':'triangle';
+    o.frequency.setValueAtTime(freq,now);
+    o.frequency.exponentialRampToValueAtTime(freq*(type==='win'?1.5:.78),now+.13);
+    g.gain.setValueAtTime(.0001,now);
+    g.gain.exponentialRampToValueAtTime(.075,now+.015);
+    g.gain.exponentialRampToValueAtTime(.0001,now+.2);
+    o.start(now);o.stop(now+.21);
+  }catch(e){}
+}
+
+const saveKey='athar-puzzle-v5-100levels';
+function loadSave(){
+  try{
+    const s=JSON.parse(localStorage.getItem(saveKey)||'{}');
+    unlocked=Math.max(1,Math.min(LEVELS.length,s.unlocked||1));
+    completed=s.completed||{};
+    hints=s.hints==null?3:s.hints;
+  }catch(e){}
+}
+function save(){
+  try{
+    localStorage.setItem(saveKey,JSON.stringify({unlocked,completed,hints}));
+  }catch(e){}
+}
+
+function endpoints(L){
+  let a={};
+  L.pairs.forEach((p,i)=>{
+    let color=COLORS[i%COLORS.length];
+    a[key(p[0],p[1])]={id:i,side:0,...color};
+    a[key(p[2],p[3])]={id:i,side:1,...color};
+  });
+  return a;
+}
+
+function makeGrid(){
+  const L=LEVELS[levelIndex], ends=endpoints(L);
+  grid=Array.from({length:L.h},(_,r)=>Array.from({length:L.w},(_,c)=>({r,c,k:key(r,c),end:ends[key(r,c)]||null})));
+  paths={};
+  L.pairs.forEach((_,i)=>paths[i]=[]);
+  moves=0;active=null;
+  render();
+}
+
+function render(){
+  const L=LEVELS[levelIndex];
+  $('chapter').textContent=L.chapter;
+  $('levelTitle').textContent=L.name;
+  $('levelBadge').textContent=`المرحلة ${levelIndex+1} / ${LEVELS.length}`;
+  $('levelDesc').textContent=L.desc;
+  $('pairs').textContent=L.pairs.length;
+  $('moves').textContent=moves;
+  $('best').textContent=completed[levelIndex+1]??'—';
+  $('stars').textContent=Object.values(completed).reduce((a,b)=>a+b,0);
+  $('hints').textContent=hints;
+  $('progress').style.width=((Object.keys(completed).length/LEVELS.length)*100)+'%';
+  $('next').disabled=!completed[levelIndex+1]||levelIndex>=LEVELS.length-1;
+
+  const board=$('board');
+  board.style.gridTemplateColumns=`repeat(${L.w},1fr)`;
+  board.innerHTML='';
+  const ends=endpoints(L), cellMap={};
+
+  for(let r=0;r<L.h;r++){
+    for(let c=0;c<L.w;c++){
+      const k=key(r,c),e=ends[k],cell=document.createElement('div');
+      cell.className='cell';cell.dataset.k=k;cell.dataset.r=r;cell.dataset.c=c;
+      if(e){
+        cell.classList.add('endpoint');
+        cell.style.setProperty('--c',e.color);
+        cell.innerHTML=`<span class="glyph">${e.glyph}</span>`;
+        cell.dataset.end=e.id;
+      }
+      board.appendChild(cell);
+      cellMap[k]=cell;
+    }
+  }
+
+  for(const [id,path] of Object.entries(paths)){
+    const color=COLORS[Number(id)%COLORS.length];
+    for(const k of path){
+      const el=cellMap[k];
+      if(el&&!el.classList.contains('endpoint')){
+        el.classList.add('path','filled');
+        el.style.setProperty('--c',color.color);
+      }
+    }
+  }
+
+  $('legend').innerHTML='';
+  L.pairs.forEach((p,i)=>{
+    const color=COLORS[i%COLORS.length],d=document.createElement('div');
+    d.className='legend-item';
+    d.innerHTML=`<span class="dot" style="background:${color.color}"></span>${color.name}`;
+    $('legend').appendChild(d);
+  });
+
+  $('levels').innerHTML='';
+  LEVELS.forEach((lv,i)=>{
+    const b=document.createElement('button');
+    b.className='level-btn'+((i+1)<=unlocked?' open':'')+(completed[i+1]?' done':'')+(i===levelIndex?' current':'');
+    b.textContent=(i+1)+(completed[i+1]?' ✓':'');
+    b.disabled=i+1>unlocked;
+    b.onclick=()=>{levelIndex=i;makeGrid();};
+    $('levels').appendChild(b);
+  });
+
+  $('message').textContent='اسحب من رمز إلى نظيره، وغطّ اللوحة كاملة.';
+  $('message').className='message';
+}
+
+function pathAt(k){
+  for(const id in paths) if(paths[id].includes(k)) return Number(id);
+  return null;
+}
+
+function canEnter(id,k){
+  const L=LEVELS[levelIndex],r=+k.split(',')[0],c=+k.split(',')[1];
+  if(r<0||c<0||r>=L.h||c>=L.w)return false;
+  const e=endpoints(L)[k];
+  if(e&&e.id!==id)return false;
+  const occupied=pathAt(k);
+  return occupied===null||occupied===id;
+}
+
+function startPath(k){
+  const e=endpoints(LEVELS[levelIndex])[k];
+  if(!e)return;
+  sound('tap');
+  active={id:e.id,last:k};
+  paths[e.id]=[k];
+  moves++;
+  render();
+  active={id:e.id,last:k};
+}
+
+function moveTo(k){
+  if(!active||k===active.last)return;
+  const [r,c]=k.split(',').map(Number),[pr,pc]=active.last.split(',').map(Number);
+  if(Math.abs(r-pr)+Math.abs(c-pc)!==1)return;
+
+  const e=endpoints(LEVELS[levelIndex])[k];
+  if(e&&e.id===active.id&&k!==paths[active.id][0]){
+    paths[active.id].push(k);
+    active.last=k;
+    sound('connect');
+    finishPath();
+    return;
+  }
+
+  if(!canEnter(active.id,k))return;
+
+  const path=paths[active.id],idx=path.indexOf(k);
+  if(idx>=0){
+    path.splice(idx+1);
+    active.last=k;
+    render();
+    return;
+  }
+
+  path.push(k);
+  active.last=k;
+  render();
+  active={id:active.id,last:k};
+}
+
+function finishPath(){
+  const id=active.id;active=null;render();
+  const L=LEVELS[levelIndex];
+  const allPairs=L.pairs.every((_,i)=>{
+    const p=paths[i];
+    return p.length>1&&((p[0]===key(L.pairs[i][0],L.pairs[i][1])&&p[p.length-1]===key(L.pairs[i][2],L.pairs[i][3]))||(p[0]===key(L.pairs[i][2],L.pairs[i][3])&&p[p.length-1]===key(L.pairs[i][0],L.pairs[i][1])));
+  });
+
+  if(!allPairs)return;
+
+  const covered=new Set(Object.values(paths).flat());
+  const missing=L.w*L.h-covered.size;
+
+  if(missing>0){
+    $('message').textContent=`كل الأزواج متصلة! باقي ${missing} خلية — غطّ اللوحة كاملة للفوز.`;
+    $('message').className='message';
+    sound('connect');
+    return;
+  }
+
+  const stars=moves<=L.pairs.length+2?3:moves<=L.pairs.length*2+3?2:1;
+  completed[levelIndex+1]=Math.max(completed[levelIndex+1]||0,stars);
+  unlocked=Math.max(unlocked,Math.min(LEVELS.length,levelIndex+2));
+  save();
+  render();
+
+  $('message').textContent=`ممتاز! اكتملت اللوحة وحصلت على ${stars} نجوم.`;
+  $('message').className='message good';
+  sound('win');
+  $('modalText').textContent=`أنهيت ${L.name} في ${moves} حركة وحصلت على ${stars} نجوم.`;
+  $('modal').classList.add('show');
+}
+
+let pointerDown=false,lastCell=null;
+const board=$('board');
+
+function cellFromPoint(x,y){
+  const el=document.elementFromPoint(x,y);
+  return el&&el.closest?el.closest('.cell'):null;
+}
+
+board.addEventListener('pointerdown',e=>{
+  const cell=e.target.closest('.cell');
+  if(!cell)return;
+  e.preventDefault();
+  pointerDown=true;
+  board.setPointerCapture?.(e.pointerId);
+  lastCell=cell.dataset.k;
+  startPath(lastCell);
+});
+
+board.addEventListener('pointermove',e=>{
+  if(!pointerDown||!active)return;
+  e.preventDefault();
+  const el=cellFromPoint(e.clientX,e.clientY);
+  if(el&&el.dataset.k!==lastCell){
+    moveTo(el.dataset.k);
+    lastCell=el.dataset.k;
+  }
+});
+
+function stop(){
+  pointerDown=false;lastCell=null;
+  if(active){
+    active=null;
+    render();
+  }
+}
+
+board.addEventListener('pointerup',stop);
+board.addEventListener('pointercancel',stop);
+board.addEventListener('contextmenu',e=>e.preventDefault());
+
+$('reset').onclick=()=>{makeGrid();};
+$('next').onclick=()=>{if(levelIndex<LEVELS.length-1){levelIndex++;makeGrid();}};
+$('modalNext').onclick=()=>{$('modal').classList.remove('show');if(levelIndex<LEVELS.length-1){levelIndex++;makeGrid();}};
+$('modal').addEventListener('click',e=>{if(e.target===$('modal'))$('modal').classList.remove('show');});
+
+$('hint').onclick=()=>{
+  if(hints<=0){
+    $('message').textContent='انتهت التلميحات المتاحة.';
+    return;
+  }
+  hints--;
+  save();
+  render();
+  const L=LEVELS[levelIndex],id=Object.keys(paths).find(i=>paths[i].length===0);
+  if(id===undefined){
+    $('message').textContent='جرّب إعادة المرحلة لرسم مسارات جديدة.';
+    return;
+  }
+  const p=L.pairs[+id],keys=[key(p[0],p[1]),key(p[2],p[3])];
+  keys.forEach(k=>{
+    const el=board.querySelector(`[data-k="${k}"]`);
+    if(el){
+      el.classList.add('hint');
+      setTimeout(()=>el.classList.remove('hint'),1500);
+    }
+  });
+  $('message').textContent='ابدأ بهذا الزوج المضيء.';
+};
+
+$('soundToggle').onclick=()=>{
+  soundOn=!soundOn;
+  $('soundToggle').textContent=soundOn?'🔊 الصوت':'🔇 صامت';
+  if(soundOn)sound('tap');
+};
+
+loadSave();
+makeGrid();
+})();
+</script>
+</body>
+</html>

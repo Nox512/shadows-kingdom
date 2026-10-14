@@ -17,7 +17,7 @@ h1{font-size:23px;margin:0;letter-spacing:.2px}.subtitle{color:var(--muted);font
 .card{background:linear-gradient(145deg,#1c2d4bdf,#111c32f5);border:1px solid #50658a66;border-radius:22px;padding:15px;box-shadow:0 18px 45px #0004,inset 0 1px #ffffff0a;backdrop-filter:blur(12px);margin-bottom:12px}
 .topline{display:flex;align-items:center;justify-content:space-between;gap:10px}.eyebrow{color:var(--gold);font-size:12px;font-weight:800}.levelname{font-size:20px;font-weight:800;margin:4px 0}.desc{font-size:13px;color:var(--muted);line-height:1.65}
 .stats{display:flex;gap:8px;margin-top:12px}.stat{flex:1;background:linear-gradient(145deg,#101d32,#14233b);border:1px solid #41577788;border-radius:13px;padding:9px;text-align:center}.stat b{display:block;font-size:18px}.stat span{font-size:11px;color:var(--muted)}
-.progress{height:7px;background:#0e1728;border-radius:9px;overflow:hidden;margin-top:12px}.progress div{height:100%;background:linear-gradient(90deg,#5ce1b9,#ffd166);box-shadow:0 0 14px #5ce1b955;width:0;transition:width .25s}
+.progress{height:7px;background:#0e1728;border-radius:999px;overflow:hidden;margin-top:12px}.progress div{height:100%;background:linear-gradient(90deg,#5ce1b9,#ffd166);box-shadow:0 0 14px #5ce1b955;width:0;transition:width .25s}
 .board-wrap{padding:11px;background:linear-gradient(145deg,#091426,#101e35);border-radius:18px;border:1px solid #5c739955;box-shadow:inset 0 0 24px #0004;position:relative}
 .board{display:grid;gap:6px;aspect-ratio:1;width:100%;touch-action:none;user-select:none;-webkit-user-select:none}
 .cell{border-radius:11px;background:linear-gradient(145deg,#2a3e60,#172640);border:1px solid #52698c75;position:relative;min-width:0;min-height:0;display:grid;place-items:center;color:white;transition:transform .12s,filter .12s,background .15s;box-shadow:inset 0 1px #ffffff0b}
@@ -81,36 +81,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function generate100Levels() {
     const list = [];
-    // Hardcoded flawless layouts for early levels to guarantee 100% solvability
-    const manualLevels = {
-      1: {w:5, h:5, pairs:[[0,0, 4,0], [0,4, 4,4]]},
-      2: {w:5, h:5, pairs:[[0,0, 0,4], [4,0, 4,4]]},
-      3: {w:5, h:5, pairs:[[0,0, 2,2], [4,0, 4,4]]},
-      4: {w:5, h:5, pairs:[[0,1, 4,1], [0,3, 4,3]]},
-      5: {w:5, h:5, pairs:[[0,0, 4,4], [0,4, 4,0]]}
-    };
-
     for (let i = 1; i <= 100; i++) {
-      if (manualLevels[i]) {
-        list.push({
-          id: i,
-          name: `المرحلة ${i}`,
-          chapter: `الفصل ${Math.ceil(i/10)}`,
-          w: manualLevels[i].w, h: manualLevels[i].h,
-          pairs: manualLevels[i].pairs,
-          desc: `لوحة ${manualLevels[i].w}×${manualLevels[i].h} - مصممة بعناية لضمان الحل التام.`
-        });
-        continue;
-      }
-
       let size = 5;
-      if (i > 15) size = 6;
-      if (i > 35) size = 7;
-      if (i > 60) size = 8;
-      if (i > 85) size = 9;
+      if (i > 20) size = 6;
+      if (i > 50) size = 7;
+      if (i > 80) size = 8;
 
-      let pairCount = 2;
-      if (i > 10) pairCount = 3;
-      if (i > 25) pairCount = 4;
-      if (i > 50) pairCount = 5;
-      if (i > 75) pairCount = 6;
+      let pairs = [];
+      if (i === 1) {
+        pairs = [[0,0, 4,0], [0,1, 4,4]];
+      } else if (i === 2) {
+        pairs = [[0,0, 0,4], [1,0, 4,4]];
+      } else if (i === 3) {
+        pairs = [[0,0, 2,4], [1,0, 4,2]];
+      } else {
+        const pairCount = i > 60 ? 4 : (i > 30 ? 3 : 2);
+        for (let p = 0; p < pairCount; p++) {
+          const r1 = p, c1 = 0;
+          const r2 = size - 1

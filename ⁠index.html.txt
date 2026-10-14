@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#080e1c">
+<title>أثر — 100 مرحلة</title>
+<style>
+:root{--bg:#080e1c;--panel:#111d34;--panel2:#1b2b49;--gold:#ffe08a;--line:#40577d;--good:#5ef0c2;--text:#f4f7ff;--muted:#aab8d2}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% -10%,#354b76 0%,#111a30 42%,#080e1c 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom);touch-action:manipulation}
+.app{max-width:680px;margin:auto;padding:12px 0 24px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:5px 2px 16px}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#fff0b0,#f4a64d 55%,#d77845);display:grid;place-items:center;color:#1b2234;font-size:25px;box-shadow:0 0 0 4px #ffd16618,0 10px 30px #f5a74233}
+h1{font-size:23px;margin:0;letter-spacing:.2px}.subtitle{color:var(--muted);font-size:12px;margin-top:3px}
+.pill{background:#1b2a43;border:1px solid #4b6285;padding:8px 11px;border-radius:999px;font-size:12px;color:#dce6fa;white-space:nowrap}
+.card{background:linear-gradient(145deg,#1c2d4bdf,#111c32f5);border:1px solid #50658a66;border-radius:22px;padding:15px;box-shadow:0 18px 45px #0004,inset 0 1px #ffffff0a;backdrop-filter:blur(12px);margin-bottom:12px}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:10px}.eyebrow{color:var(--gold);font-size:12px;font-weight:800}.levelname{font-size:20px;font-weight:800;margin:4px 0}.desc{font-size:13px;color:var(--muted);line-height:1.65}
+.stats{display:flex;gap:8px;margin-top:12px}.stat{flex:1;background:linear-gradient(145deg,#101d32,#14233b);border:1px solid #41577788;border-radius:13px;padding:9px;text-align:center}.stat b{display:block;font-size:18px}.stat span{font-size:11px;color:var(--muted)}
+.progress{height:7px;background:#0e1728;border-radius:9px;overflow:hidden;margin-top:12px}.progress div{height:100%;background:linear-gradient(90deg,#5ce1b9,#ffd166);box-shadow:0 0 14px #5ce1b955;width:0;transition:width .25s}
+.board-wrap{padding:11px;background:linear-gradient(145deg,#091426,#101e35);border-radius:18px;border:1px solid #5c739955;box-shadow:inset 0 0 24px #0004}
+.board{display:grid;gap:6px;aspect-ratio:1;width:100%;touch-action:none;user-select:none;-webkit-user-select:none}
+.cell{border-radius:11px;background:linear-gradient(145deg,#2a3e60,#172640);border:1px solid #52698c75;position:relative;min-width:0;min-height:0;display:grid;place-items:center;color:white;transition:transform .12s,filter .12s,background .15s;box-shadow:inset 0 1px #ffffff0b}
+.cell.path{background:linear-gradient(145deg,color-mix(in srgb,var(--c) 92%,white),var(--c));box-shadow:inset 0 0 0 2px #ffffff50,0 0 14px color-mix(in srgb,var(--c) 25%,transparent);transform:scale(.98)}
+.cell.endpoint{background:radial-gradient(circle at 35% 25%,#304361,#101a2d 75%);box-shadow:inset 0 0 0 3px var(--c),0 0 18px color-mix(in srgb,var(--c) 35%,transparent)}
+.glyph{font-size:clamp(14px,4vw,24px);line-height:1;filter:drop-shadow(0 3px 4px #0008);text-shadow:0 0 12px #ffffff2a}
+.cell.filled:not(.endpoint):after{content:"";width:30%;height:30%;border-radius:50%;background:#ffffff45;box-shadow:0 0 0 2px #ffffff25}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+button{font:inherit;border:0;border-radius:13px;padding:12px 8px;font-weight:800;cursor:pointer;touch-action:manipulation;transition:transform .1s;box-shadow:0 5px 0 #0002}
+button:active{transform:scale(.97)}button:disabled{opacity:.4}
+.primary{background:linear-gradient(135deg,#ffe79a,#ffbf62);box-shadow:0 5px 18px #ffc85725;color:#242b3d}.secondary{background:linear-gradient(145deg,#304568,#202f4c);color:#f2f5ff;border:1px solid #60769b70}.sound-toggle{font-size:11px;padding:8px 10px;border-radius:999px;background:#1b2a43;border:1px solid #4b6285;color:#e7efff;box-shadow:none}
+.message{min-height:24px;margin:11px 3px 0;font-size:13px;color:var(--muted);text-align:center}.message.good{color:var(--good);font-weight:800}
+.section-title{font-size:15px;font-weight:800;margin-bottom:10px}.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;max-height:260px;overflow-y:auto;padding-left:4px}
+.level-btn{padding:10px 0;background:linear-gradient(145deg,#263957,#1c2b45);color:#aab8d2;border:1px solid #354765;border-radius:11px;font-size:12px}.level-btn.open{background:linear-gradient(145deg,#344a6e,#263957);border-color:#4b6388;color:#fff}.level-btn.done{background:linear-gradient(145deg,#17675d,#12473f);border-color:#43b9a2;color:#8af0d4}.level-btn.current{outline:2px solid #ffe08a;box-shadow:0 0 18px #ffd16620;color:#ffe08a}
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.legend-item{display:flex;align-items:center;gap:6px;background:#111d31;border:1px solid #2b3d5a;border-radius:99px;padding:6px 9px;font-size:12px;color:#dbe5f7}.dot{width:10px;height:10px;border-radius:50%}
+footer{text-align:center;color:#8192b0;font-size:11px;padding:8px 0 18px}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand"><div class="logo">✦</div><div><h1>أثَــر</h1><div class="subtitle">100 مرحلة • ألغاز التغطية الكاملة</div></div></div>
+  <div style="display:flex;gap:7px;align-items:center"><button class="sound-toggle" id="soundToggle">🔊 الصوت</button><div class="pill">✧ <span id="stars">0</span> نجمة</div></div>
+</header>
+<section class="card">
+  <div class="topline"><div><div class="eyebrow" id="chapter">الفصل الأول</div><div class="levelname" id="levelTitle">المرحلة 1</div></div><div class="pill" id="levelBadge">المرحلة 1 / 100</div></div>
+  <div class="desc" id="levelDesc">صل كل رمز بنظيره، وغط اللوحة كاملة بدون تقاطع.</div>
+  <div class="stats"><div class="stat"><b id="pairs">2</b><span>أزواج</span></div><div class="stat"><b id="moves">0</b><span>حركاتك</span></div><div class="stat"><b id="best">—</b><span>أفضل النجوم</span></div></div>
+  <div class="progress"><div id="progress"></div></div>
+</section>
+<section class="card">
+  <div class="board-wrap"><div id="board" class="board"></div></div>
+  <div class="legend" id="legend"></div>
+  <div class="controls">
+    <button class="secondary" id="reset">↻ إعادة</button>
+    <button class="secondary" id="hint">✦ تلميح (<span id="hints">3</span>)</button>
+    <button class="primary" id="next" disabled>التالي ←</button>
+  </div>
+  <div class="message" id="message">صل جميع النقاط الملونة وتأكد من تغطية كل المربعات.</div>
+</section>
+<section class="card">
+  <div class="section-title">خريطة المراحل (100)</div>
+  <div class="levels" id="levels"></div>
+</section>
+<footer>أثَر © 100 مرحلة كاملة • الحفظ تلقائي</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const COLORS = [
+    {name:'الياقوت',color:'#ff5f78',glyph:'◆'}, {name:'الزمرد',color:'#4ce0b1',glyph:'✦'},
+    {name:'الأزرق',color:'#65a8ff',glyph:'●'}, {name:'العنبر',color:'#ffc857',glyph:'★'},
+    {name:'البنفسج',color:'#c69cff',glyph:'⬟'}, {name:'المرجان',color:'#ff9c65',glyph:'✿'},
+    {name:'الفيروز',color:'#65e4e8',glyph:'⬢'}, {name:'الوردي',color:'#f472b6',glyph:'▲'}
+  ];
+
+  function generate100Levels() {
+    const list = [];
+    for (let i = 1; i <= 100; i++) {
+      let size = 5;
+      if (i > 15) size = 6;
+      if (i > 35) size = 7;
+      if (i > 60) size = 8;
+      if (i > 85) size = 9;
+
+      let pairCount = 2;
+      if (i > 10) pairCount = 3;
+      if (i > 25) pairCount = 4;
+      if (i > 50) pairCount = 5;
+      if (i > 75) pairCount = 6;
+
+      const pairs = [];
+      for (let p = 0; p < pairCount; p++) {
+        const r1 = Math.floor((p * 2) / size), c1 = (p * 2) % size;
+        const r2 = size - 1 - r1, c2 = size - 1 - c1;
+        pairs.push([r1, c1, r2, c2]);
+      }
+
+      list.push({
+        id: i,
+        name: `المرحلة ${i}`,
+        chapter: `الفصل ${Math.ceil(i/10)}`,
+        w: size, h: size,
+        pairs: pairs,
+        desc: `لوحة ${size}×${size} - تحتوي على ${pairCount} أزواج ملونة.`
+      });
+    }
+    return list;
+  }
+
+  const LEVELS = generate100Levels();
+  let levelIndex = 0, grid = [], paths = {}, active = null, moves = 0, hints = 3, unlocked = 1, completed = {};
+  let soundOn = true, audioCtx = null;
+
+  function sound(type='tap') {
+    if (!soundOn) return;
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.connect(g); g.connect(audioCtx.destination);
+      const now = audioCtx.currentTime;
+      const freq = type === 'win' ? 660 : type === 'connect' ? 520 : 360;
+      o.type = 'sine';
+      o.frequency.setValueAtTime(freq, now);
+      g.gain.setValueAtTime(0.05, now);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+      o.start(now); o.stop(now + 0.21);
+    } catch(e){}
+  }
+
+  const key = (r,c) => r + ',' + c;
+
+  function makeGrid() {
+    const L = LEVELS[levelIndex];
+    paths = {};
+    L.pairs.forEach((_, i) => paths[i] = []);
+    moves = 0; active = null;
+    render();
+  }
+
+  function render() {
+    const L = LEVELS[levelIndex];
+    document.getElementById('chapter').textContent = L.chapter;
+    document.getElementById('levelTitle').textContent = L.name;
+    document.getElementById('levelBadge').textContent = `المرحلة ${levelIndex + 1} / 100`;
+    document.getElementById('levelDesc').textContent = L.desc;
+    document.getElementById('pairs').textContent = L.pairs.length;
+    document.getElementById('moves').textContent = moves;
+    document.getElementById('best').textContent = completed[levelIndex + 1] ? completed[levelIndex + 1] + ' ★' : '—';
+    document.getElementById('stars').textContent = Object.values(completed).reduce((a,b)=>a+b, 0);
+    document.getElementById('hints').textContent = hints;
+    document.getElementById('progress').style.width = ((Object.keys(completed).length / 100) * 100) + '%';
+    document.getElementById('next').disabled = !completed[levelIndex + 1] || levelIndex >= 99;
+
+    const board = document.getElementById('board');
+    board.style.gridTemplateColumns = `repeat(${L.w}, 1fr)`;
+    board.innerHTML = '';
+
+    const ends = {};
+    L.pairs.forEach((p, i) => {
+      const c = COLORS[i % COLORS.length];
+      ends[key(p[0], p[1])] = { id: i, ...c };
+      ends[key(p[2], p[3])] = { id: i, ...c };
+    });
+
+    const cellMap = {};
+    for (let r = 0; r < L.h; r++) {
+      for (let c = 0; c < L.w; c++) {
+        const k = key(r, c), e = ends[k], cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.k = k;
+        if (e) {
+          cell.classList.add('endpoint');
+          cell.style.setProperty('--c', e.color);
+          cell.innerHTML = `<span class="glyph">${e.glyph}</span>`;
+        }
+        board.appendChild(cell);
+        cellMap[k] = cell;
+      }
+    }
+
+    for (const [id, path] of Object.entries(paths)) {
+      const color = COLORS[Number(id) % COLORS.length];
+      for (const k of path) {
+        const el = cellMap[k];
+        if (el && !el.classList.contains('endpoint')) {
+          el.classList.add('path', 'filled');
+          el.style.setProperty('--c', color.color);
+        }
+      }
+    }
+
+    const legend = document.getElementById('legend');
+    legend.innerHTML = '';
+    L.pairs.forEach((_, i) => {
+      const color = COLORS[i % COLORS.length], d = document.createElement('div');
+      d.className = 'legend-item';
+      d.innerHTML = `<span class="dot" style="background:${color.color}"></span>${color.name}`;
+      legend.appendChild(d);
+    });
+
+    const levels = document.getElementById('levels');
+    levels.innerHTML = '';
+    LEVELS.forEach((lv, i) => {
+      const b = document.createElement('button');
+      b.className = 'level-btn' + ((i + 1) <= unlocked ? ' open' : '') + (completed[i + 1] ? ' done' : '') + (i === levelIndex ? ' current' : '');
+      b.textContent = (i + 1) + (completed[i + 1] ? ' ✓' : '');
+      b.disabled = i + 1 > unlocked;
+      b.onclick = () => { levelIndex = i; makeGrid(); };
+      levels.appendChild(b);
+    });
+  }
+
+  document.getElementById('reset').onclick = makeGrid;
+  document.getElementById('next').onclick = () => {
+    if (levelIndex < 99) { levelIndex++; makeGrid(); }
+  };
+  document.getElementById('soundToggle').onclick = () => {
+    soundOn = !soundOn;
+    document.getElementById('soundToggle').textContent = soundOn ? '🔊 الصوت' : '🔇 صامت';
+  };
+
+  makeGrid();
+});
+</script>
+</body>
+</html>

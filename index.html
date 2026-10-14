@@ -28,7 +28,7 @@
  </div>
  <div class="boss" id="boss"><div class="bossname" id="bossName">ذئب الظلال</div><div class="bar"><div class="fill" id="bossFill" style="width:100%"></div></div></div>
  <div class="bottom">
-  <div class="hint" id="hint">حرّك المحارب بالأزرار ◀ ▶ ▲ ▼<br>اقترب من الوحش ثم اضغط ⚔️</div>
+  <div class="hint" id="hint">اضغط مطولًا للحركة ◀ ▶ ▲ ▼<br>اقترب واضغط ⚔️ للهجوم · 🧪 للعلاج</div>
   <div class="controls">
    <button class="btn" id="up" aria-label="للأمام">▲</button><button class="btn attack" id="attack">⚔️</button>
    <button class="btn" id="left" aria-label="يسار">◀</button><button class="btn heal" id="heal">🧪</button>
@@ -120,7 +120,7 @@ function makeSkeleton(){
 const hero=makeWarrior();hero.position.set(-2,0,3);
 let enemy=makeWolf();enemy.position.set(2,0,-1);
 let enemyType=0;
-let hp=120,maxHp=120,xp=0,nextXp=100,level=1,goldCount=0,atk=18,potions=2,enemyHp=70,enemyMax=70,enemyAtk=10,dead=false,started=false,attacking=0,invuln=0;
+let hp=120,maxHp=120,xp=0,nextXp=100,level=1,goldCount=0,atk=18,potions=2,enemyHp=70,enemyMax=70,enemyAtk=10,dead=false,started=false,attacking=0,invuln=0,enemyAttackTimer=0,attackCooldown=0;
 const keys={up:false,down:false,left:false,right:false};
 function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),1500)}
 function updateHud(){
@@ -129,10 +129,10 @@ function updateHud(){
  $('level').textContent=level;$('goldText').textContent=goldCount;$('atkText').textContent=atk;
  $('boss').style.display=enemyHp>0?'block':'none';$('bossName').textContent=enemyType===0?'ذئب الظلال':enemyType===1?'هيكل الأطلال':'غول الكهف';$('bossFill').style.width=Math.max(0,enemyHp/enemyMax*100)+'%';
 }
-function enemyHit(){if(dead||enemyHp<=0)return;if(invuln>0){toast('تفاديت الضربة!');return}const dmg=Math.max(4,enemyAtk-Math.floor(level*1.4));hp=Math.max(0,hp-dmg);invuln=1.1;toast(`الوحش ضربك -${dmg} صحة`);updateHud();if(hp<=0){dead=true;$('endTitle').textContent='سقط المحارب';$('endText').textContent='انتهت المغامرة. أعد المحاولة واهزم وحوش الغابة.';$('continue').textContent='إعادة المحاولة';$('continue').onclick=reset;$('end').classList.remove('hidden')}}
+function enemyHit(){if(dead||enemyHp<=0)return;if(invuln>0){toast('تفاديت الضربة!');return}const dmg=Math.max(4,enemyAtk-Math.floor(level*1.4));hp=Math.max(0,hp-dmg);invuln=.65;toast(`الوحش ضربك -${dmg} صحة`);updateHud();if(hp<=0){dead=true;$('endTitle').textContent='سقط المحارب';$('endText').textContent='انتهت المغامرة. أعد المحاولة واهزم وحوش الغابة.';$('continue').textContent='إعادة المحاولة';$('continue').onclick=reset;$('end').classList.remove('hidden')}}
 function reset(){hp=maxHp=120;xp=0;nextXp=100;level=1;goldCount=0;atk=18;potions=2;enemyType=0;enemyHp=enemyMax=70;enemyAtk=10;dead=false;hero.position.set(-2,0,3);scene.remove(enemy);enemy=makeWolf();enemy.position.set(2,0,-1);$('end').classList.add('hidden');updateHud()}
 function nextEnemy(){enemyType++;if(enemyType>2)enemyType=0;scene.remove(enemy);if(enemyType===1){enemy=makeSkeleton();enemy.position.set(2,0,-1);enemyHp=enemyMax=105;enemyAtk=14;toast('ظهر حارس الأطلال!')}else if(enemyType===2){enemy=makeWolf();enemy.scale.setScalar(1.35);enemy.position.set(2,0,-1);enemyHp=enemyMax=165;enemyAtk=19;toast('ظهر غول الكهف!')}else{enemy=makeWolf();enemy.position.set(2,0,-1);enemyHp=enemyMax=80;enemyAtk=12;toast('ذئب جديد يقترب!')}updateHud()}
-function attack(){if(!started||dead||attacking>0)return;const dx=enemy.position.x-hero.position.x,dz=enemy.position.z-hero.position.z,dist=Math.hypot(dx,dz);if(dist>3.4){toast('اقترب من الوحش أولًا!');return}attacking=.42;const dmg=atk+Math.floor(Math.random()*8);enemyHp=Math.max(0,enemyHp-dmg);hero.userData.sword.rotation.z=-1.35;toast(`ضربة سيف! -${dmg}`);if(enemyHp<=0){goldCount+=20+Math.floor(Math.random()*20);xp+=45;toast('انتصار! +45 خبرة وذهب');if(xp>=nextXp){xp-=nextXp;level++;nextXp=Math.floor(nextXp*1.5);maxHp+=20;hp=Math.min(maxHp,hp+35);atk+=4;toast('ارتفع مستواك! هجوم وصحة أعلى')}setTimeout(()=>{nextEnemy()},850)}else{setTimeout(enemyHit,420)}updateHud()}
+function attack(){if(!started||dead||attackCooldown>0)return;const dx=enemy.position.x-hero.position.x,dz=enemy.position.z-hero.position.z,dist=Math.hypot(dx,dz);if(dist>3.4){toast('اقترب من الوحش أولًا!');return}attacking=.32;attackCooldown=.48;hero.userData.sword.rotation.z=-1.45;if(dist>2.65){toast('بعيد! اقترب أكثر');return}const dmg=atk+Math.floor(Math.random()*8);enemyHp=Math.max(0,enemyHp-dmg);toast(`ضربة سيف! -${dmg}`);if(enemyHp<=0){goldCount+=20+Math.floor(Math.random()*20);xp+=45;toast('انتصار! +45 خبرة وذهب');if(xp>=nextXp){xp-=nextXp;level++;nextXp=Math.floor(nextXp*1.5);maxHp+=20;hp=Math.min(maxHp,hp+35);atk+=4;toast('ارتفع مستواك! هجوم وصحة أعلى')}setTimeout(()=>{nextEnemy()},850)}updateHud()}
 function heal(){if(!started||dead)return;if(potions<=0){toast('نفدت الجرعات!');return}if(hp>=maxHp){toast('صحتك كاملة');return}potions--;hp=Math.min(maxHp,hp+38);toast('استعدت 38 صحة');updateHud()}
 function move(dir,on){keys[dir]=on}
 [['up','up'],['down','down'],['left','left'],['right','right']].forEach(([id,d])=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);move(d,true)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,e=>move(d,false)))});
@@ -146,9 +146,9 @@ if(started&&!dead){
  if(vx||vz){hero.position.x+=vx*dt*4.1;hero.position.z+=vz*dt*4.1;hero.rotation.y=Math.atan2(vx,vz);hero.userData.cape.rotation.x=-.22+Math.sin(t*13)*.08}
  hero.position.x=THREE.MathUtils.clamp(hero.position.x,-10,10);hero.position.z=THREE.MathUtils.clamp(hero.position.z,-13,8);
  const dx=hero.position.x-enemy.position.x,dz=hero.position.z-enemy.position.z,dist=Math.hypot(dx,dz);
- if(enemyHp>0&&dist>1.7){enemy.position.x+=dx/dist*dt*(enemyType===2?1.25:.8);enemy.position.z+=dz/dist*dt*(enemyType===2?1.25:.8);enemy.rotation.y=Math.atan2(dx,dz)}
- if(enemyHp>0&&dist<1.75&&invuln<=0){enemyHit()}
- if(attacking>0){attacking-=dt;if(attacking<=0){hero.userData.sword.rotation.z=-.35;}}
+ if(enemyHp>0&&dist>2.15){enemy.position.x+=dx/dist*dt*(enemyType===2?.72:.48);enemy.position.z+=dz/dist*dt*(enemyType===2?.72:.48);enemy.rotation.y=Math.atan2(dx,dz)}
+ enemyAttackTimer=Math.max(0,enemyAttackTimer-dt);if(enemyHp>0&&dist<2.25&&enemyAttackTimer<=0&&invuln<=0){enemyAttackTimer=1.65;enemyHit()}
+ if(attacking>0){attacking-=dt;if(attacking<=0){hero.userData.sword.rotation.z=-.35;}}if(attackCooldown>0)attackCooldown=Math.max(0,attackCooldown-dt);
  if(invuln>0)invuln-=dt;
 }
 const target=new THREE.Vector3(hero.position.x,0,hero.position.z);

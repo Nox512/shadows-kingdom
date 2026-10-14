@@ -1,1 +1,10 @@
-{"name":"ظلال المملكة المنسية 3D","short_name":"ظلال 3D","start_url":"./","display":"standalone","background_color":"#101720","theme_color":"#101720"}
+{
+  "name": "ظلال المملكة المنسية",
+  "short_name": "ظلال المملكة",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#14251f",
+  "theme_color": "#14251f",
+  "lang": "ar",
+  "dir": "rtl"
+}

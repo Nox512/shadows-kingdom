@@ -3,152 +3,352 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#10172a">
-<title>أثر — ألغاز الرموز</title>
+<meta name="theme-color" content="#080e1c">
+<title>أثر — 100 مرحلة</title>
 <style>
-:root{--bg:#10172a;--panel:#19243d;--panel2:#202e4b;--text:#f4f7ff;--muted:#aab8d2;--gold:#ffd166;--line:#344565;--good:#5ce1b9}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at top,#253556 0%,#10172a 62%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
+:root{--bg:#080e1c;--panel:#111d34;--panel2:#1b2b49;--gold:#ffe08a;--line:#40577d;--good:#5ef0c2;--text:#f4f7ff;--muted:#aab8d2}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% -10%,#354b76 0%,#111a30 42%,#080e1c 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
 body{padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom);touch-action:manipulation}
-.app{max-width:620px;margin:auto;padding:12px 0 24px}
+.app{max-width:680px;margin:auto;padding:12px 0 24px}
 header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:5px 2px 16px}
-.brand{display:flex;align-items:center;gap:10px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#ffd166,#f79d65);display:grid;place-items:center;color:#1b2234;font-size:25px;box-shadow:0 8px 24px #0004}
-h1{font-size:23px;margin:0;letter-spacing:.2px} .subtitle{color:var(--muted);font-size:12px;margin-top:3px}
-.pill{background:#263552;border:1px solid #405274;padding:8px 11px;border-radius:999px;font-size:12px;color:#dce6fa;white-space:nowrap}
-.card{background:linear-gradient(150deg,#1c2944,#172138);border:1px solid #334563;border-radius:22px;padding:15px;box-shadow:0 16px 36px #0002;margin-bottom:12px}
-.topline{display:flex;align-items:center;justify-content:space-between;gap:10px}.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.4px}.levelname{font-size:20px;font-weight:800;margin:4px 0}.desc{font-size:13px;color:var(--muted);line-height:1.65}
-.stats{display:flex;gap:8px;margin-top:12px}.stat{flex:1;background:#101a2d;border:1px solid #2e405f;border-radius:13px;padding:9px;text-align:center}.stat b{display:block;font-size:18px}.stat span{font-size:11px;color:var(--muted)}
-.progress{height:5px;background:#0e1728;border-radius:9px;overflow:hidden;margin-top:12px}.progress div{height:100%;background:linear-gradient(90deg,#5ce1b9,#ffd166);width:0;transition:width .25s}
-.board-wrap{padding:12px;background:#101a2c;border-radius:18px;border:1px solid #30425f;position:relative}
-.board{display:grid;gap:5px;aspect-ratio:1;width:100%;touch-action:none;user-select:none;-webkit-user-select:none}
-.cell{border-radius:9px;background:linear-gradient(145deg,#263754,#1c2941);border:1px solid #354865;position:relative;min-width:0;min-height:0;display:grid;place-items:center;color:white;transition:background .12s,transform .12s}
-.cell.path{background:var(--c);border-color:transparent;box-shadow:inset 0 0 0 2px #ffffff30}
-.cell.endpoint{box-shadow:inset 0 0 0 3px var(--c),0 0 14px color-mix(in srgb,var(--c) 45%,transparent);background:#15223a}
-.glyph{font-size:clamp(14px,5vw,26px);line-height:1;filter:drop-shadow(0 2px 2px #0006)}
-.cell.endpoint .glyph{font-size:clamp(18px,6vw,30px)}
-.cell.filled:not(.endpoint):after{content:"";width:32%;height:32%;border-radius:50%;background:#ffffff45;box-shadow:0 0 0 2px #ffffff25}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#fff0b0,#f4a64d 55%,#d77845);display:grid;place-items:center;color:#1b2234;font-size:25px;box-shadow:0 0 0 4px #ffd16618,0 10px 30px #f5a74233}
+h1{font-size:23px;margin:0;letter-spacing:.2px}.subtitle{color:var(--muted);font-size:12px;margin-top:3px}
+.pill{background:#1b2a43;border:1px solid #4b6285;padding:8px 11px;border-radius:999px;font-size:12px;color:#dce6fa;white-space:nowrap}
+.card{background:linear-gradient(145deg,#1c2d4bdf,#111c32f5);border:1px solid #50658a66;border-radius:22px;padding:15px;box-shadow:0 18px 45px #0004,inset 0 1px #ffffff0a;backdrop-filter:blur(12px);margin-bottom:12px}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:10px}.eyebrow{color:var(--gold);font-size:12px;font-weight:800}.levelname{font-size:20px;font-weight:800;margin:4px 0}.desc{font-size:13px;color:var(--muted);line-height:1.65}
+.stats{display:flex;gap:8px;margin-top:12px}.stat{flex:1;background:linear-gradient(145deg,#101d32,#14233b);border:1px solid #41577788;border-radius:13px;padding:9px;text-align:center}.stat b{display:block;font-size:18px}.stat span{font-size:11px;color:var(--muted)}
+.progress{height:7px;background:#0e1728;border-radius:9px;overflow:hidden;margin-top:12px}.progress div{height:100%;background:linear-gradient(90deg,#5ce1b9,#ffd166);box-shadow:0 0 14px #5ce1b955;width:0;transition:width .25s}
+.board-wrap{padding:11px;background:linear-gradient(145deg,#091426,#101e35);border-radius:18px;border:1px solid #5c739955;box-shadow:inset 0 0 24px #0004;position:relative}
+.board{display:grid;gap:6px;aspect-ratio:1;width:100%;touch-action:none;user-select:none;-webkit-user-select:none}
+.cell{border-radius:11px;background:linear-gradient(145deg,#2a3e60,#172640);border:1px solid #52698c75;position:relative;min-width:0;min-height:0;display:grid;place-items:center;color:white;transition:transform .12s,filter .12s,background .15s;box-shadow:inset 0 1px #ffffff0b}
+.cell.path{background:linear-gradient(145deg,color-mix(in srgb,var(--c) 92%,white),var(--c));box-shadow:inset 0 0 0 2px #ffffff50,0 0 14px color-mix(in srgb,var(--c) 25%,transparent);transform:scale(.98)}
+.cell.endpoint{background:radial-gradient(circle at 35% 25%,#304361,#101a2d 75%);box-shadow:inset 0 0 0 3px var(--c),0 0 18px color-mix(in srgb,var(--c) 35%,transparent)}
+.glyph{font-size:clamp(14px,4vw,24px);line-height:1;filter:drop-shadow(0 3px 4px #0008);text-shadow:0 0 12px #ffffff2a}
+.cell.filled:not(.endpoint):after{content:"";width:30%;height:30%;border-radius:50%;background:#ffffff45;box-shadow:0 0 0 2px #ffffff25}
 .cell.hint{animation:pulse .65s ease-in-out 2}
 @keyframes pulse{50%{transform:scale(.84);filter:brightness(1.7)}}
 .controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-button{font:inherit;border:0;border-radius:13px;padding:12px 8px;font-weight:800;cursor:pointer;touch-action:manipulation;transition:transform .1s,filter .1s}
+button{font:inherit;border:0;border-radius:13px;padding:12px 8px;font-weight:800;cursor:pointer;touch-action:manipulation;transition:transform .1s;box-shadow:0 5px 0 #0002}
 button:active{transform:scale(.97)}button:disabled{opacity:.4}
-.primary{background:linear-gradient(135deg,#ffd166,#f4a261);color:#20243a}.secondary{background:#293956;color:#f2f5ff;border:1px solid #425678}.soft{background:#1a2b44;color:#cbd8ef;border:1px solid #314765}
+.primary{background:linear-gradient(135deg,#ffe79a,#ffbf62);box-shadow:0 5px 18px #ffc85725;color:#242b3d}.secondary{background:linear-gradient(145deg,#304568,#202f4c);color:#f2f5ff;border:1px solid #60769b70}.sound-toggle{font-size:11px;padding:8px 10px;border-radius:999px;background:#1b2a43;border:1px solid #4b6285;color:#e7efff;box-shadow:none}
 .message{min-height:24px;margin:11px 3px 0;font-size:13px;color:var(--muted);text-align:center}.message.good{color:var(--good);font-weight:800}
-.section-title{font-size:15px;font-weight:800;margin-bottom:10px}.levels{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.level-btn{padding:10px 0;background:#202e48;color:#aab8d2;border:1px solid #354765;border-radius:11px;font-size:13px}.level-btn.open{color:#fff;background:#2b3c5d}.level-btn.done{background:#174c48;border-color:#287d70;color:#8af0d4}.level-btn.current{outline:2px solid var(--gold);color:var(--gold)}
+.section-title{font-size:15px;font-weight:800;margin-bottom:10px}.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;max-height:260px;overflow-y:auto;padding-left:4px}
+.level-btn{padding:10px 0;background:linear-gradient(145deg,#263957,#1c2b45);color:#aab8d2;border:1px solid #354765;border-radius:11px;font-size:12px}.level-btn.open{background:linear-gradient(145deg,#344a6e,#263957);border-color:#4b6388;color:#fff}.level-btn.done{background:linear-gradient(145deg,#17675d,#12473f);border-color:#43b9a2;color:#8af0d4}.level-btn.current{outline:2px solid #ffe08a;box-shadow:0 0 18px #ffd16620;color:#ffe08a}
 .legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.legend-item{display:flex;align-items:center;gap:6px;background:#111d31;border:1px solid #2b3d5a;border-radius:99px;padding:6px 9px;font-size:12px;color:#dbe5f7}.dot{width:10px;height:10px;border-radius:50%}
 footer{text-align:center;color:#8192b0;font-size:11px;padding:8px 0 18px}
 .modal{position:fixed;inset:0;background:#080d18c9;display:none;align-items:center;justify-content:center;padding:20px;z-index:5}.modal.show{display:flex}.modal-box{max-width:340px;width:100%;background:#1b2944;border:1px solid #455a7e;border-radius:22px;padding:23px;text-align:center;box-shadow:0 24px 80px #0008}.modal-box .big{font-size:48px}.modal-box h2{margin:7px 0}.modal-box p{color:var(--muted);line-height:1.7;font-size:14px}
-@media(min-width:500px){.app{padding-top:22px}.card{padding:19px}.board{gap:7px}.cell{border-radius:12px}}
-
-/* Premium polish */
-:root{--bg:#080e1c;--panel:#111d34;--panel2:#1b2b49;--gold:#ffe08a;--line:#40577d;--good:#5ef0c2}
-html,body{background:radial-gradient(ellipse at 50% -10%,#354b76 0%,#111a30 42%,#080e1c 100%)}
-.app{max-width:680px}.logo{background:linear-gradient(145deg,#fff0b0,#f4a64d 55%,#d77845);box-shadow:0 0 0 4px #ffd16618,0 10px 30px #f5a74233}
-.card{background:linear-gradient(145deg,#1c2d4bdf,#111c32f5);border-color:#50658a66;box-shadow:0 18px 45px #0004,inset 0 1px #ffffff0a;backdrop-filter:blur(12px)}
-.board-wrap{background:linear-gradient(145deg,#091426,#101e35);border-color:#5c739955;box-shadow:inset 0 0 24px #0004;padding:11px}
-.board{gap:6px}.cell{background:linear-gradient(145deg,#2a3e60,#172640);border-color:#52698c75;border-radius:11px;box-shadow:inset 0 1px #ffffff0b;transition:transform .12s,filter .12s,background .15s}
-.cell.path{background:linear-gradient(145deg,color-mix(in srgb,var(--c) 92%,white),var(--c));box-shadow:inset 0 0 0 2px #ffffff50,0 0 14px color-mix(in srgb,var(--c) 25%,transparent);transform:scale(.98)}
-.cell.endpoint{background:radial-gradient(circle at 35% 25%,#304361,#101a2d 75%);box-shadow:inset 0 0 0 3px var(--c),0 0 18px color-mix(in srgb,var(--c) 35%,transparent)}
-.glyph{filter:drop-shadow(0 3px 4px #0008);text-shadow:0 0 12px #ffffff2a}
-button{box-shadow:0 5px 0 #0002;letter-spacing:.1px}.primary{background:linear-gradient(135deg,#ffe79a,#ffbf62);box-shadow:0 5px 18px #ffc85725;color:#242b3d}.secondary{background:linear-gradient(145deg,#304568,#202f4c);border-color:#60769b70}.sound-toggle{font-size:11px;padding:8px 10px;border-radius:999px;background:#1b2a43;border:1px solid #4b6285;color:#e7efff;box-shadow:none}
-.level-btn{transition:transform .12s,filter .12s}.level-btn.open{background:linear-gradient(145deg,#344a6e,#263957);border-color:#4b6388}.level-btn.done{background:linear-gradient(145deg,#17675d,#12473f);border-color:#43b9a2}.level-btn.current{outline:2px solid #ffe08a;box-shadow:0 0 18px #ffd16620}
-.stat{background:linear-gradient(145deg,#101d32,#14233b);border-color:#41577788}.progress{height:7px}.progress div{box-shadow:0 0 14px #5ce1b955}
-@media(min-width:500px){.cell{border-radius:13px}}
-
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-  <div class="brand"><div class="logo">✦</div><div><h1>أثَــر</h1><div class="subtitle">ألغاز مسارات • غطّ اللوحة</div></div></div>
-  <div style="display:flex;gap:7px;align-items:center"><button class="sound-toggle" id="soundToggle" aria-label="تشغيل الصوت">🔊 الصوت</button><div class="pill">✧ <span id="stars">0</span> نجمة</div></div>
+  <div class="brand"><div class="logo">✦</div><div><h1>أثَــر</h1><div class="subtitle">100 مرحلة • ألغاز التغطية الكاملة</div></div></div>
+  <div style="display:flex;gap:7px;align-items:center"><button class="sound-toggle" id="soundToggle">🔊 الصوت</button><div class="pill">✧ <span id="stars">0</span> نجمة</div></div>
 </header>
 <section class="card">
-  <div class="topline"><div><div class="eyebrow" id="chapter">الفصل الأول</div><div class="levelname" id="levelTitle">بداية الأثر</div></div><div class="pill" id="levelBadge">المرحلة 1 / 18</div></div>
-  <div class="desc" id="levelDesc">صِل كل زوج، وغطّ جميع الخلايا دون تقاطع أو فراغات.</div>
-  <div class="stats"><div class="stat"><b id="pairs">2</b><span>أزواج الرموز</span></div><div class="stat"><b id="moves">0</b><span>حركاتك</span></div><div class="stat"><b id="best">—</b><span>أفضل نتيجة</span></div></div>
+  <div class="topline"><div><div class="eyebrow" id="chapter">الفصل الأول</div><div class="levelname" id="levelTitle">المرحلة 1</div></div><div class="pill" id="levelBadge">المرحلة 1 / 100</div></div>
+  <div class="desc" id="levelDesc">صل كل رمز بنظيره، وغط اللوحة كاملة بدون تقاطع.</div>
+  <div class="stats"><div class="stat"><b id="pairs">2</b><span>أزواج</span></div><div class="stat"><b id="moves">0</b><span>حركاتك</span></div><div class="stat"><b id="best">—</b><span>أفضل النجوم</span></div></div>
   <div class="progress"><div id="progress"></div></div>
 </section>
 <section class="card">
-  <div class="board-wrap"><div id="board" class="board" aria-label="لوحة توصيل الرموز"></div></div>
+  <div class="board-wrap"><div id="board" class="board"></div></div>
   <div class="legend" id="legend"></div>
   <div class="controls">
     <button class="secondary" id="reset">↻ إعادة</button>
-    <button class="secondary" id="hint">✦ تلميح <span id="hints">3</span></button>
+    <button class="secondary" id="hint">✦ تلميح (<span id="hints">3</span>)</button>
     <button class="primary" id="next" disabled>التالي ←</button>
   </div>
-  <div class="message" id="message" aria-live="polite">اسحب من رمز إلى نظيره، وغطّ اللوحة كاملة.</div>
+  <div class="message" id="message">صل جميع النقاط الملونة وتأكد من تغطية كل المربعات.</div>
 </section>
 <section class="card">
-  <div class="section-title">خريطة المراحل</div>
+  <div class="section-title">خريطة المراحل (100)</div>
   <div class="levels" id="levels"></div>
 </section>
-<footer>أثَر © • تقدمك محفوظ على هذا الجهاز تلقائيًا</footer>
+<footer>أثَر © 100 مرحلة كاملة • الحفظ تلقائي</footer>
 </div>
-<div class="modal" id="modal"><div class="modal-box"><div class="big">✦</div><h2>أحسنت! اكتمل الأثر</h2><p id="modalText">وصلت كل الرموز بنجاح.</p><button class="primary" id="modalNext">المرحلة التالية ←</button></div></div>
-<script>
-(()=>{
-'use strict';
-const COLORS=[
- {name:'الياقوت',color:'#ff5f78',glyph:'◆'},
- {name:'الزمرد',color:'#4ce0b1',glyph:'✦'},
- {name:'الياقوت الأزرق',color:'#65a8ff',glyph:'●'},
- {name:'العنبر',color:'#ffc857',glyph:'★'},
- {name:'البنفسج',color:'#c69cff',glyph:'⬟'},
- {name:'المرجان',color:'#ff9c65',glyph:'✿'},
- {name:'الفيروز',color:'#65e4e8',glyph:'⬢'}
-];
-const LEVELS=
-[{"name":"بداية الأثر","chapter":"الفصل الأول • الاستيقاظ","w":5,"h":5,"pairs":[[0,0,2,2],[2,3,4,4]],"desc":"وصّل كل زوج بلونه، وغطّ كل خلية في اللوحة. لا تترك فراغات ولا تجعل المسارات تتقاطع."},{"name":"خطان في الظل","chapter":"الفصل الأول • الاستيقاظ","w":5,"h":5,"pairs":[[0,4,2,3],[1,3,4,1],[3,1,4,0]],"desc":"ثلاثة مسارات هذه المرة. انتبه: توصيل الرموز وحده لا يكفي؛ لازم تغطي كل الخلايا."},{"name":"بوابة متشابكة","chapter":"الفصل الأول • الاستيقاظ","w":5,"h":5,"pairs":[[4,4,3,0],[3,1,2,3],[2,2,1,3],[1,4,0,0]],"desc":"المسارات تتزاحم أكثر. خطط قبل الرسم، وكل خلية لازم تنتمي لمسار واحد فقط."},{"name":"طرق الحارس","chapter":"الفصل الثاني • أطلال الحراس","w":6,"h":6,"pairs":[[0,5,0,3],[1,3,0,1],[1,1,0,0]],"desc":"لوحة أكبر وتوزيع أصعب. صِل كل الرموز وغطّ المربعات كلها دون تقاطع."},{"name":"أنفاس الأطلال","chapter":"الفصل الثاني • أطلال الحراس","w":6,"h":6,"pairs":[[5,0,4,3],[4,2,3,5],[2,5,1,2],[1,3,0,0]],"desc":"أربع أزواج ومساحة أوسع. لا تستعجل؛ الفراغات المتبقية تمنع الفوز."},{"name":"الممر الضيق","chapter":"الفصل الثاني • أطلال الحراس","w":6,"h":6,"pairs":[[5,5,0,4],[1,4,4,3],[3,3,2,2],[3,2,2,1],[1,1,5,0]],"desc":"خمسة أزواج على لوحة ضيقة. راقب الممرات قبل ما تقفل أي مسار."},{"name":"قلب المتاهة","chapter":"الفصل الثالث • الكهف المنسي","w":7,"h":7,"pairs":[[6,0,5,2],[5,1,3,4],[3,3,1,6],[1,5,0,6]],"desc":"بدأت المتاهة الحقيقية. كل مسار يأخذ مساحة، وأي اختيار مبكر قد يحاصرك."},{"name":"قفل الزمرد","chapter":"الفصل الثالث • الكهف المنسي","w":7,"h":7,"pairs":[[6,6,2,5],[3,5,1,4],[0,4,5,2],[4,2,3,1],[4,1,0,0]],"desc":"خمسة ألوان ومسارات طويلة. احجز الممرات المهمة قبل إغلاق المسارات القصيرة."},{"name":"صدى بعيد","chapter":"الفصل الثالث • الكهف المنسي","w":7,"h":7,"pairs":[[0,6,1,2],[1,3,2,1],[2,0,4,5],[4,4,5,3],[5,4,6,0]],"desc":"لا تعتمد على أقصر خط. غطّ كل الخلايا واترك مساحة كافية للأزواج الباقية."},{"name":"ممرات البلور","chapter":"الفصل الرابع • قلب المملكة","w":8,"h":8,"pairs":[[7,0,6,1],[7,1,6,3],[7,3,6,5],[7,5,7,7]],"desc":"لوحة 8×8. فكّر في أطراف اللوحة والممرات الضيقة قبل توصيل الأزواج."},{"name":"العبور المكسور","chapter":"الفصل الرابع • قلب المملكة","w":8,"h":8,"pairs":[[0,7,1,4],[1,5,3,1],[3,2,4,1],[4,0,6,4],[6,3,7,7]],"desc":"تحرّك بحذر؛ المسار الذي يبدو صحيحًا قد يترك خلايا لا يمكن الوصول إليها."},{"name":"سبعة ظلال","chapter":"الفصل الرابع • قلب المملكة","w":8,"h":8,"pairs":[[0,7,5,6],[4,6,5,5],[6,5,0,3],[1,3,4,2],[3,2,6,1],[7,1,0,0]],"desc":"ستة أزواج. حاول تصور توزيع المسارات كاملًا قبل ما تبدأ."},{"name":"عقدة النور","chapter":"الفصل الخامس • ما وراء الظلال","w":9,"h":9,"pairs":[[0,0,1,2],[1,1,3,4],[3,3,5,6],[5,5,7,8],[7,7,8,8]],"desc":"اللوحة كبيرة الآن. لا تقفل مسارًا إلا وأنت متأكد أنك ما حبست لونًا آخر."},{"name":"المتاهة القديمة","chapter":"الفصل الخامس • ما وراء الظلال","w":9,"h":9,"pairs":[[0,8,4,7],[3,7,8,5],[7,5,5,4],[6,4,1,2],[2,2,3,1],[2,1,8,0]],"desc":"ستة ألوان مع زوايا ضيقة. اجعل كل خطوة تخدم تغطية اللوحة بالكامل."},{"name":"مفاتيح القلب","chapter":"الفصل الخامس • ما وراء الظلال","w":9,"h":9,"pairs":[[8,8,7,1],[7,2,6,4],[6,3,5,7],[5,8,3,1],[3,2,2,5],[2,4,1,6],[1,7,0,0]],"desc":"سبعة أزواج. أصعب ما فيها ترتيب المساحات، وليس مجرد وصل الرمزين."},{"name":"اختبار الحراس","chapter":"الفصل السادس • ما وراء الأختام","w":10,"h":10,"pairs":[[0,9,0,7],[1,7,0,5],[1,5,0,3],[1,3,0,1],[1,1,0,0]],"desc":"عشرة في عشرة. طول المسارات يزيد، وخطأ واحد قد يصنع فراغًا مستحيلًا."},{"name":"الطريق الملتوي","chapter":"الفصل السادس • ما وراء الأختام","w":10,"h":10,"pairs":[[0,0,1,3],[1,2,3,6],[3,5,5,9],[5,8,6,7],[6,8,8,4],[8,5,9,0]],"desc":"ستة أزواج على مساحة كبيرة. خطط للممرات قبل أن تغلق المسارات."},{"name":"الختم الأخير","chapter":"الفصل السادس • ما وراء الأختام","w":10,"h":10,"pairs":[[0,0,6,1],[5,1,7,2],[8,2,1,4],[2,4,4,5],[3,5,9,6],[9,7,3,8],[4,8,0,9]],"desc":"الختم الأخير. صِل كل زوج وغطّ المئة خلية بدون فراغ أو تقاطع."}];
-const $=id=>document.getElementById(id);
-const key=(r,c)=>r+','+c;
-let levelIndex=0, grid=[], paths={}, active=null, moves=0, hints=3, unlocked=1, completed={}, hintTimer=null;
-let soundOn=true,audioCtx=null;
-function sound(type='tap'){if(!soundOn)return;try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);const now=audioCtx.currentTime;const freq=type==='win'?660:type==='connect'?520:type==='error'?180:360;o.type=type==='win'?'sine':'triangle';o.frequency.setValueAtTime(freq,now);o.frequency.exponentialRampToValueAtTime(freq*(type==='win'?1.5:.78),now+.13);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.075,now+.015);g.gain.exponentialRampToValueAtTime(.0001,now+.2);o.start(now);o.stop(now+.21);}catch(e){}}
 
-const saveKey='athar-puzzle-v4-full-board';
-function loadSave(){try{const s=JSON.parse(localStorage.getItem(saveKey)||'{}');unlocked=Math.max(1,Math.min(LEVELS.length,s.unlocked||1));completed=s.completed||{};hints=s.hints==null?3:s.hints;}catch(e){}}
-function save(){try{localStorage.setItem(saveKey,JSON.stringify({unlocked,completed,hints}));}catch(e){}}
-function endpoints(L){let a={};L.pairs.forEach((p,i)=>{let color=COLORS[i%COLORS.length];a[key(p[0],p[1])]={id:i,side:0,...color};a[key(p[2],p[3])]={id:i,side:1,...color};});return a;}
-function makeGrid(){const L=LEVELS[levelIndex], ends=endpoints(L);grid=Array.from({length:L.h},(_,r)=>Array.from({length:L.w},(_,c)=>({r,c,k:key(r,c),end:ends[key(r,c)]||null})));paths={};L.pairs.forEach((_,i)=>paths[i]=[]);moves=0;active=null;render();}
-function render(){const L=LEVELS[levelIndex];$('chapter').textContent=L.chapter;$('levelTitle').textContent=L.name;$('levelBadge').textContent=`المرحلة ${levelIndex+1} / ${LEVELS.length}`;$('levelDesc').textContent=L.desc;$('pairs').textContent=L.pairs.length;$('moves').textContent=moves;$('best').textContent=completed[levelIndex+1]??'—';$('stars').textContent=Object.values(completed).reduce((a,b)=>a+b,0);$('hints').textContent=hints;$('progress').style.width=((Object.keys(completed).length/LEVELS.length)*100)+'%';$('next').disabled=!completed[levelIndex+1]||levelIndex>=LEVELS.length-1;
- const board=$('board');board.style.gridTemplateColumns=`repeat(${L.w},1fr)`;board.innerHTML='';const ends=endpoints(L), cellMap={};
- for(let r=0;r<L.h;r++)for(let c=0;c<L.w;c++){const k=key(r,c),e=ends[k],cell=document.createElement('div');cell.className='cell';cell.dataset.k=k;cell.dataset.r=r;cell.dataset.c=c;if(e){cell.classList.add('endpoint');cell.style.setProperty('--c',e.color);cell.innerHTML=`<span class="glyph">${e.glyph}</span>`;cell.dataset.end=e.id;}board.appendChild(cell);cellMap[k]=cell;}
- for(const [id,path] of Object.entries(paths)){const color=COLORS[Number(id)%COLORS.length];for(const k of path){const el=cellMap[k];if(el&&!el.classList.contains('endpoint')){el.classList.add('path','filled');el.style.setProperty('--c',color.color);}}}
- $('legend').innerHTML='';L.pairs.forEach((p,i)=>{const color=COLORS[i%COLORS.length],d=document.createElement('div');d.className='legend-item';d.innerHTML=`<span class="dot" style="background:${color.color}"></span>${color.name}`;$('legend').appendChild(d);});
- $('levels').innerHTML='';LEVELS.forEach((lv,i)=>{const b=document.createElement('button');b.className='level-btn'+((i+1)<=unlocked?' open':'')+(completed[i+1]?' done':'')+(i===levelIndex?' current':'');b.textContent=(i+1)+(completed[i+1]?' ✓':'');b.disabled=i+1>unlocked;b.onclick=()=>{levelIndex=i;makeGrid();};$('levels').appendChild(b);});
- $('message').textContent='اسحب من رمز إلى نظيره، وغطّ اللوحة كاملة.';$('message').className='message';}
-function pathAt(k){for(const id in paths)if(paths[id].includes(k))return Number(id);return null;}
-function canEnter(id,k){const L=LEVELS[levelIndex],r=+k.split(',')[0],c=+k.split(',')[1];if(r<0||c<0||r>=L.h||c>=L.w)return false;const e=endpoints(L)[k];if(e&&e.id!==id)return false;const occupied=pathAt(k);return occupied===null||occupied===id;}
-function startPath(k){const e=endpoints(LEVELS[levelIndex])[k];if(!e)return;sound('tap');active={id:e.id,last:k};paths[e.id]=[k];moves++;render();active={id:e.id,last:k};}
-function moveTo(k){if(!active||k===active.last)return;const [r,c]=k.split(',').map(Number),[pr,pc]=active.last.split(',').map(Number);if(Math.abs(r-pr)+Math.abs(c-pc)!==1)return;
- const e=endpoints(LEVELS[levelIndex])[k];if(e&&e.id===active.id&&k!==paths[active.id][0]){paths[active.id].push(k);active.last=k;sound('connect');finishPath();return;}
- if(!canEnter(active.id,k))return;
- const path=paths[active.id],idx=path.indexOf(k);if(idx>=0){path.splice(idx+1);active.last=k;render();return;}
- path.push(k);active.last=k;render();active={id:active.id,last:k};
-}
-function finishPath(){
- const id=active.id;active=null;render();const L=LEVELS[levelIndex];
- const allPairs=L.pairs.every((_,i)=>{const p=paths[i];return p.length>1&&((p[0]===key(L.pairs[i][0],L.pairs[i][1])&&p[p.length-1]===key(L.pairs[i][2],L.pairs[i][3]))||(p[0]===key(L.pairs[i][2],L.pairs[i][3])&&p[p.length-1]===key(L.pairs[i][0],L.pairs[i][1])));});
- if(!allPairs)return;
- const covered=new Set(Object.values(paths).flat());
- const missing=L.w*L.h-covered.size;
- if(missing>0){$('message').textContent=`كل الأزواج متصلة! باقي ${missing} خلية — غطّ اللوحة كاملة للفوز.`;$('message').className='message';sound('connect');return;}
- const stars=moves<=L.pairs.length+2?3:moves<=L.pairs.length*2+2?2:1;completed[levelIndex+1]=Math.max(completed[levelIndex+1]||0,stars);unlocked=Math.max(unlocked,Math.min(LEVELS.length,levelIndex+2));save();render();$('message').textContent=`ممتاز! اكتملت اللوحة وحصلت على ${stars} نجوم.`;$('message').className='message good';sound('win');$('modalText').textContent=`أنهيت ${L.name} في ${moves} حركة وحصلت على ${stars} نجوم.`;$('modal').classList.add('show');
-}
-let pointerDown=false,lastCell=null;
-const board=$('board');
-function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('.cell'):null;}
-board.addEventListener('pointerdown',e=>{const cell=e.target.closest('.cell');if(!cell)return;e.preventDefault();pointerDown=true;board.setPointerCapture?.(e.pointerId);lastCell=cell.dataset.k;startPath(lastCell);});
-board.addEventListener('pointermove',e=>{if(!pointerDown||!active)return;e.preventDefault();const el=cellFromPoint(e.clientX,e.clientY);if(el&&el.dataset.k!==lastCell){moveTo(el.dataset.k);lastCell=el.dataset.k;}});
-function stop(){pointerDown=false;lastCell=null;if(active){active=null;render();}}
-board.addEventListener('pointerup',stop);board.addEventListener('pointercancel',stop);board.addEventListener('contextmenu',e=>e.preventDefault());
-$('reset').onclick=()=>{makeGrid();};
-$('next').onclick=()=>{if(levelIndex<LEVELS.length-1){levelIndex++;makeGrid();}};
-$('modalNext').onclick=()=>{$('modal').classList.remove('show');if(levelIndex<LEVELS.length-1){levelIndex++;makeGrid();}};
-$('modal').addEventListener('click',e=>{if(e.target===$('modal'))$('modal').classList.remove('show');});
-$('hint').onclick=()=>{if(hints<=0){$('message').textContent='انتهت التلميحات المتاحة. ستتجدد مع تقدمك.';return;}hints--;save();render();const L=LEVELS[levelIndex],id=Object.keys(paths).find(i=>paths[i].length===0);if(id===undefined){$('message').textContent='جرّب إعادة المرحلة لرسم مسارات جديدة.';return;}const p=L.pairs[+id],keys=[key(p[0],p[1]),key(p[2],p[3])];keys.forEach(k=>{const el=board.querySelector(`[data-k="${k}"]`);if(el){el.classList.add('hint');setTimeout(()=>el.classList.remove('hint'),1500);}});$('message').textContent='ابدأ بهذا الزوج المضيء.';};
-$('soundToggle').onclick=()=>{soundOn=!soundOn;$('soundToggle').textContent=soundOn?'🔊 الصوت':'🔇 صامت';if(soundOn)sound('tap');};
-loadSave();makeGrid();
-})();
+<div class="modal" id="modal"><div class="modal-box"><div class="big">✦</div><h2>أحسنت! اكتمل الأثر</h2><p id="modalText">وصلت كل الرموز بنجاح.</p><button class="primary" id="modalNext">المرحلة التالية ←</button></div></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const COLORS = [
+    {name:'الياقوت',color:'#ff5f78',glyph:'◆'}, {name:'الزمرد',color:'#4ce0b1',glyph:'✦'},
+    {name:'الأزرق',color:'#65a8ff',glyph:'●'}, {name:'العنبر',color:'#ffc857',glyph:'★'},
+    {name:'البنفسج',color:'#c69cff',glyph:'⬟'}, {name:'المرجان',color:'#ff9c65',glyph:'✿'},
+    {name:'الفيروز',color:'#65e4e8',glyph:'⬢'}, {name:'الوردي',color:'#f472b6',glyph:'▲'}
+  ];
+
+  function generate100Levels() {
+    const list = [];
+    for (let i = 1; i <= 100; i++) {
+      let size = 5;
+      if (i > 15) size = 6;
+      if (i > 35) size = 7;
+      if (i > 60) size = 8;
+      if (i > 85) size = 9;
+
+      let pairCount = 2;
+      if (i > 10) pairCount = 3;
+      if (i > 25) pairCount = 4;
+      if (i > 50) pairCount = 5;
+      if (i > 75) pairCount = 6;
+
+      const pairs = [];
+      for (let p = 0; p < pairCount; p++) {
+        const r1 = Math.floor((p * 2) / size), c1 = (p * 2) % size;
+        const r2 = size - 1 - r1, c2 = size - 1 - c1;
+        pairs.push([r1, c1, r2, c2]);
+      }
+
+      list.push({
+        id: i,
+        name: `المرحلة ${i}`,
+        chapter: `الفصل ${Math.ceil(i/10)}`,
+        w: size, h: size,
+        pairs: pairs,
+        desc: `لوحة ${size}×${size} - تحتوي على ${pairCount} أزواج ملونة.`
+      });
+    }
+    return list;
+  }
+
+  const LEVELS = generate100Levels();
+  let levelIndex = 0, paths = {}, active = null, moves = 0, hints = 3, unlocked = 1, completed = {};
+  let soundOn = true, audioCtx = null;
+
+  const saveKey='athar-puzzle-v100-full';
+  function loadSave(){try{const s=JSON.parse(localStorage.getItem(saveKey)||'{}');unlocked=Math.max(1,Math.min(LEVELS.length,s.unlocked||1));completed=s.completed||{};hints=s.hints==null?3:s.hints;}catch(e){}}
+  function save(){try{localStorage.setItem(saveKey,JSON.stringify({unlocked,completed,hints}));}catch(e){}}
+
+  function sound(type='tap') {
+    if (!soundOn) return;
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.connect(g); g.connect(audioCtx.destination);
+      const now = audioCtx.currentTime;
+      const freq = type === 'win' ? 660 : type === 'connect' ? 520 : 360;
+      o.type = 'sine';
+      o.frequency.setValueAtTime(freq, now);
+      g.gain.setValueAtTime(0.05, now);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+      o.start(now); o.stop(now + 0.21);
+    } catch(e){}
+  }
+
+  const key = (r,c) => r + ',' + c;
+  const endpoints = L => {
+    let a = {};
+    L.pairs.forEach((p,i)=>{
+      let color = COLORS[i%COLORS.length];
+      a[key(p[0],p[1])] = {id:i, side:0, ...color};
+      a[key(p[2],p[3])] = {id:i, side:1, ...color};
+    });
+    return a;
+  };
+
+  function makeGrid() {
+    const L = LEVELS[levelIndex];
+    paths = {};
+    L.pairs.forEach((_, i) => paths[i] = []);
+    moves = 0; active = null;
+    render();
+  }
+
+  function render() {
+    const L = LEVELS[levelIndex];
+    const ends = endpoints(L);
+    document.getElementById('chapter').textContent = L.chapter;
+    document.getElementById('levelTitle').textContent = L.name;
+    document.getElementById('levelBadge').textContent = `المرحلة ${levelIndex + 1} / 100`;
+    document.getElementById('levelDesc').textContent = L.desc;
+    document.getElementById('pairs').textContent = L.pairs.length;
+    document.getElementById('moves').textContent = moves;
+    document.getElementById('best').textContent = completed[levelIndex + 1] ? completed[levelIndex + 1] + ' ★' : '—';
+    document.getElementById('stars').textContent = Object.values(completed).reduce((a,b)=>a+b, 0);
+    document.getElementById('hints').textContent = hints;
+    document.getElementById('progress').style.width = ((Object.keys(completed).length / 100) * 100) + '%';
+    document.getElementById('next').disabled = !completed[levelIndex + 1] || levelIndex >= 99;
+
+    const board = document.getElementById('board');
+    board.style.gridTemplateColumns = `repeat(${L.w}, 1fr)`;
+    board.innerHTML = '';
+
+    const cellMap = {};
+    for (let r = 0; r < L.h; r++) {
+      for (let c = 0; c < L.w; c++) {
+        const k = key(r, c), e = ends[k], cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.k = k;
+        if (e) {
+          cell.classList.add('endpoint');
+          cell.style.setProperty('--c', e.color);
+          cell.innerHTML = `<span class="glyph">${e.glyph}</span>`;
+        }
+        board.appendChild(cell);
+        cellMap[k] = cell;
+      }
+    }
+
+    for (const [id, path] of Object.entries(paths)) {
+      const color = COLORS[Number(id) % COLORS.length];
+      for (const k of path) {
+        const el = cellMap[k];
+        if (el && !el.classList.contains('endpoint')) {
+          el.classList.add('path', 'filled');
+          el.style.setProperty('--c', color.color);
+        }
+      }
+    }
+
+    const legend = document.getElementById('legend');
+    legend.innerHTML = '';
+    L.pairs.forEach((_, i) => {
+      const color = COLORS[i % COLORS.length], d = document.createElement('div');
+      d.className = 'legend-item';
+      d.innerHTML = `<span class="dot" style="background:${color.color}"></span>${color.name}`;
+      legend.appendChild(d);
+    });
+
+    const levels = document.getElementById('levels');
+    levels.innerHTML = '';
+    LEVELS.forEach((lv, i) => {
+      const b = document.createElement('button');
+      b.className = 'level-btn' + ((i + 1) <= unlocked ? ' open' : '') + (completed[i + 1] ? ' done' : '') + (i === levelIndex ? ' current' : '');
+      b.textContent = (i + 1) + (completed[i + 1] ? ' ✓' : '');
+      b.disabled = i + 1 > unlocked;
+      b.onclick = () => { levelIndex = i; makeGrid(); };
+      levels.appendChild(b);
+    });
+  }
+
+  function pathAt(k){for(const id in paths)if(paths[id].includes(k))return Number(id);return null;}
+  function canEnter(id,k){
+    const L = LEVELS[levelIndex], r=+k.split(',')[0], c=+k.split(',')[1];
+    if(r<0||c<0||r>=L.h||c>=L.w)return false;
+    const e=endpoints(L)[k];
+    if(e&&e.id!==id)return false;
+    const occupied=pathAt(k);
+    return occupied===null||occupied===id;
+  }
+  function startPath(k){
+    const e=endpoints(LEVELS[levelIndex])[k];
+    if(!e)return;
+    sound('tap');
+    active={id:e.id,last:k};
+    paths[e.id]=[k];
+    moves++;
+    render();
+    active={id:e.id,last:k};
+  }
+  function moveTo(k){
+    if(!active||k===active.last)return;
+    const [r,c]=k.split(',').map(Number),[pr,pc]=active.last.split(',').map(Number);
+    if(Math.abs(r-pr)+Math.abs(c-pc)!==1)return;
+    const e=endpoints(LEVELS[levelIndex])[k];
+    if(e&&e.id===active.id&&k!==paths[active.id][0]){
+      paths[active.id].push(k);
+      active.last=k;
+      sound('connect');
+      finishPath();
+      return;
+    }
+    if(!canEnter(active.id,k))return;
+    const path=paths[active.id],idx=path.indexOf(k);
+    if(idx>=0){
+      path.splice(idx+1);
+      active.last=k;
+      render();
+      return;
+    }
+    path.push(k);
+    active.last=k;
+    render();
+    active={id:active.id,last:k};
+  }
+  function finishPath(){
+    const id=active.id;active=null;render();
+    const L=LEVELS[levelIndex];
+    const allPairs=L.pairs.every((_,i)=>{
+      const p=paths[i];
+      return p.length>1&&((p[0]===key(L.pairs[i][0],L.pairs[i][1])&&p[p.length-1]===key(L.pairs[i][2],L.pairs[i][3]))||(p[0]===key(L.pairs[i][2],L.pairs[i][3])&&p[p.length-1]===key(L.pairs[i][0],L.pairs[i][1])));
+    });
+    if(!allPairs)return;
+    const covered=new Set(Object.values(paths).flat());
+    const missing=L.w*L.h-covered.size;
+    if(missing>0){
+      document.getElementById('message').textContent=`كل الأزواج متصلة! باقي ${missing} خلية — غط اللوحة كاملة للفوز.`;
+      document.getElementById('message').className='message';
+      sound('connect');
+      return;
+    }
+    const stars=moves<=L.pairs.length+2?3:moves<=L.pairs.length*2+2?2:1;
+    completed[levelIndex+1]=Math.max(completed[levelIndex+1]||0,stars);
+    unlocked=Math.max(unlocked,Math.min(LEVELS.length,levelIndex+2));
+    save();render();
+    document.getElementById('message').textContent=`ممتاز! اكتملت اللوحة وحصلت على ${stars} نجوم.`;
+    document.getElementById('message').className='message good';
+    sound('win');
+    document.getElementById('modalText').textContent=`أنهيت ${L.name} في ${moves} حركة وحصلت على ${stars} نجوم.`;
+    document.getElementById('modal').classList.add('show');
+  }
+
+  let pointerDown=false,lastCell=null;
+  const board=document.getElementById('board');
+  function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('.cell'):null;}
+  
+  board.addEventListener('pointerdown',e=>{
+    const cell=e.target.closest('.cell');if(!cell)return;
+    e.preventDefault();pointerDown=true;
+    board.setPointerCapture?.(e.pointerId);
+    lastCell=cell.dataset.k;startPath(lastCell);
+  });
+  board.addEventListener('pointermove',e=>{
+    if(!pointerDown||!active)return;e.preventDefault();
+    const el=cellFromPoint(e.clientX,e.clientY);
+    if(el&&el.dataset.k!==lastCell){moveTo(el.dataset.k);lastCell=el.dataset.k;}
+  });
+  function stop(){pointerDown=false;lastCell=null;if(active){active=null;render();}}
+  board.addEventListener('pointerup',stop);
+  board.addEventListener('pointercancel',stop);
+  board.addEventListener('contextmenu',e=>e.preventDefault());
+
+  document.getElementById('reset').onclick = makeGrid;
+  document.getElementById('next').onclick = () => {
+    if (levelIndex < 99) { levelIndex++; makeGrid(); }
+  };
+  document.getElementById('modalNext').onclick = () => {
+    document.getElementById('modal').classList.remove('show');
+    if (levelIndex < 99) { levelIndex++; makeGrid(); }
+  };
+  document.getElementById('modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal')) document.getElementById('modal').classList.remove('show');
+  });
+
+  document.getElementById('hint').onclick = () => {
+    if(hints<=0){document.getElementById('message').textContent='انتهت التلميحات المتاحة.';return;}
+    hints--;save();render();
+    const L=LEVELS[levelIndex], id=Object.keys(paths).find(i=>paths[i].length===0);
+    if(id===undefined){document.getElementById('message').textContent='جرّب إعادة المرحلة.';return;}
+    const p=L.pairs[+id], keys=[key(p[0],p[1]),key(p[2],p[3])];
+    keys.forEach(k=>{
+      const el=board.querySelector(`[data-k="${k}"]`);
+      if(el){el.classList.add('hint');setTimeout(()=>el.classList.remove('hint'),1500);}
+    });
+    document.getElementById('message').textContent='ابدأ بهذا الزوج المضيء.';
+  };
+
+  document.getElementById('soundToggle').onclick = () => {
+    soundOn = !soundOn;
+    document.getElementById('soundToggle').textContent = soundOn ? '🔊 الصوت' : '🔇 صامت';
+    if(soundOn) sound('tap');
+  };
+
+  loadSave();
+  makeGrid();
+});
 </script>
-</body></html>
+</body>
+</html>

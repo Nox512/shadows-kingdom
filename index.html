@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#111018"><title>ظلال المملكة المنسية</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#111018;--panel:#211f2b;--gold:#f3c969;--red:#e65d68;--green:#79d6a3;--text:#f4f0e8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 15%,#30263d,#111018 65%);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100dvh;overflow:hidden;touch-action:manipulation}
+#app{max-width:720px;margin:auto;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom);gap:8px}
+header{display:flex;align-items:center;justify-content:space-between;padding:7px 3px}.brand{font-weight:900;font-size:20px;color:var(--gold)}.sub{font-size:12px;color:#b8b2c5}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.card{background:#211f2beF;border:1px solid #494153;border-radius:14px;padding:9px 11px}.statline{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}.bar{height:8px;background:#393443;border-radius:9px;overflow:hidden}.fill{height:100%;transition:width .2s}.hp{background:linear-gradient(90deg,#b82d48,#ff7782)}.xp{background:linear-gradient(90deg,#8b68ff,#e0b4ff)}
+#scene{position:relative;flex:1;min-height:220px;max-height:420px;border:1px solid #4c4057;border-radius:18px;overflow:hidden;background:linear-gradient(#201c31 0%,#3b2940 52%,#171522 100%)}
+.moon{position:absolute;top:12%;left:14%;width:48px;height:48px;border-radius:50%;background:#f3d9a0;box-shadow:0 0 35px #f3d9a066}
+.ruin{position:absolute;bottom:30%;height:45%;width:20%;background:#171522;clip-path:polygon(20% 0,35% 12%,35% 100%,0 100%,0 25%);opacity:.8}.r1{left:4%}.r2{right:8%;transform:scaleX(-1);width:25%}
+.ground{position:absolute;bottom:0;height:31%;width:100%;background:linear-gradient(#282235,#14121d)}
+#hero,#monster{position:absolute;bottom:20%;font-size:clamp(48px,13vw,78px);filter:drop-shadow(0 6px 3px #0008);transition:left .16s,bottom .16s;user-select:none}
+#hero{left:24%;z-index:3}#monster{right:20%;z-index:2;transform:scaleX(-1)}
+#hero.swing{animation:swing .25s}#monster.hit{animation:hit .2s}@keyframes swing{50%{transform:translateX(22px) rotate(-15deg)}}@keyframes hit{50%{filter:brightness(3) drop-shadow(0 0 12px red);transform:scaleX(-1) translateX(12px)}}
+#monsterHpWrap{position:absolute;right:10%;bottom:calc(20% + 70px);width:36%;z-index:4}.enemyname{font-size:12px;text-align:center;margin-bottom:4px;text-shadow:0 2px 3px black}.enemybar{height:7px;border-radius:8px;background:#111;overflow:hidden;border:1px solid #ffffff44}.enemyfill{height:100%;background:#ee5364;transition:width .2s}
+#toast{position:absolute;top:10px;left:10px;right:10px;text-align:center;font-size:13px;font-weight:700;color:var(--gold);text-shadow:0 2px 4px #000;pointer-events:none}
+.log{height:76px;overflow:auto;background:#191722;border:1px solid #393443;border-radius:12px;padding:8px 10px;font-size:12px;color:#c9c3d1;line-height:1.6}.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.btn{border:1px solid #68536c;background:linear-gradient(#393044,#272231);color:var(--text);border-radius:13px;min-height:49px;padding:8px 5px;font-weight:800;font-size:14px}.btn:active{transform:scale(.97)}.primary{border-color:#c89e4c;background:linear-gradient(#6c4b24,#49311e);color:#ffe4a0}.wide{grid-column:span 3}.footer{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#bcb4c8;padding:0 3px}.pill{border:1px solid #51465d;border-radius:20px;padding:5px 9px}
+.modal{position:absolute;inset:0;background:#090810dd;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px}.modalbox{width:100%;max-width:400px;background:#24202e;border:1px solid #756080;border-radius:20px;padding:20px;text-align:center}.modal h2{color:var(--gold)}.hidden{display:none!important}
+@media(min-width:600px){#app{padding-top:12px;padding-bottom:12px}.actions .btn{font-size:15px}#scene{max-height:430px}}
+</style></head>
+<body><main id="app">
+<header><div><div class="brand">ظلال المملكة المنسية</div><div class="sub">الفصل الأول · الغابة الملعونة</div></div><div class="pill" id="level">المستوى 1</div></header>
+<section class="stats">
+ <div class="card"><div class="statline"><b>❤️ الصحة</b><span id="hpText">120 / 120</span></div><div class="bar"><div id="hpFill" class="fill hp" style="width:100%"></div></div></div>
+ <div class="card"><div class="statline"><b>✨ الخبرة</b><span id="xpText">0 / 100</span></div><div class="bar"><div id="xpFill" class="fill xp" style="width:0%"></div></div></div>
+ <div class="card"><div class="statline"><b>⚔️ الهجوم</b><span id="atkText">18</span></div><div class="statline" style="margin:7px 0 0"><b>🛡️ الدفاع</b><span id="defText">8</span></div></div>
+ <div class="card"><div class="statline"><b>🪙 الذهب</b><span id="goldText">0</span></div><div class="statline" style="margin:7px 0 0"><b>🧪 الجرعات</b><span id="potText">2</span></div></div>
+</section>
+<section id="scene" aria-label="ساحة المعركة">
+ <div class="moon"></div><div class="ruin r1"></div><div class="ruin r2"></div><div class="ground"></div>
+ <div id="toast">تحرّك بحذر… الذئب يراقبك!</div><div id="hero">🧙🏻‍♂️</div><div id="monster">🐺</div>
+ <div id="monsterHpWrap"><div class="enemyname" id="enemyName">ذئب الظلال · المستوى 1</div><div class="enemybar"><div class="enemyfill" id="enemyFill" style="width:100%"></div></div></div>
+</section>
+<div class="log" id="log" aria-live="polite">وصلتَ إلى الغابة الملعونة. ذئب الظلال يعترض طريقك. اهزمه لتحصل على الخبرة والغنائم.</div>
+<section class="actions">
+ <button class="btn" id="moveBtn">↔️ تحرّك</button><button class="btn primary" id="attackBtn">⚔️ هجوم</button><button class="btn" id="heavyBtn">💥 ضربة ثقيلة</button>
+ <button class="btn" id="dodgeBtn">💨 مراوغة</button><button class="btn" id="potionBtn">🧪 علاج</button><button class="btn" id="lootBtn">🎒 الحقيبة</button>
+</section>
+<div class="footer"><span id="quest">المهمة: اهزم ذئب الظلال</span><button class="btn" style="min-height:34px;padding:5px 10px" id="resetBtn">إعادة اللعب</button></div>
+</main>
+<div id="modal" class="modal hidden"><div class="modalbox"><h2 id="modalTitle">انتصرت!</h2><p id="modalText"></p><button class="btn primary wide" id="modalBtn">متابعة</button></div></div>
+<script>
+const $=id=>document.getElementById(id);
+const initial=()=>({level:1,hp:120,maxHp:120,xp:0,nextXp:100,atk:18,def:8,gold:0,potions:2,enemyHp:65,enemyMax:65,enemy:"ذئب الظلال",enemyAtk:15,enemyDef:2,enemyCount:0,won:false,dead:false,guard:false,dodge:false,bag:[],move:0});
+let s=initial();
+function say(t){$("log").innerHTML=t+"<br>"+$("log").innerHTML;$("toast").textContent=t}
+function render(){
+ $("level").textContent="المستوى "+s.level;$("hpText").textContent=`${s.hp} / ${s.maxHp}`;$("hpFill").style.width=(s.hp/s.maxHp*100)+"%";
+ $("xpText").textContent=`${s.xp} / ${s.nextXp}`;$("xpFill").style.width=(s.xp/s.nextXp*100)+"%";
+ $("atkText").textContent=s.atk;$("defText").textContent=s.def;$("goldText").textContent=s.gold;$("potText").textContent=s.potions;
+ $("enemyName").textContent=s.enemy+" · المستوى "+(s.enemyCount+1);$("enemyFill").style.width=Math.max(0,s.enemyHp/s.enemyMax*100)+"%";
+ $("monster").textContent=s.enemyCount===0?"🐺":s.enemyCount===1?"🦴":"👹";
+ $("monster").style.opacity=s.enemyHp<=0?".15":"1";$("hero").textContent=s.level>=3?"🗡️":"🧙🏻‍♂️";
+ $("quest").textContent=s.won?"المهمة: انتصار! ابحث عن العدو التالي":s.dead?"المهمة: أعد المحاولة":"المهمة: اهزم "+s.enemy;
+ $("attackBtn").disabled=s.won||s.dead;$("heavyBtn").disabled=s.won||s.dead;
+}
+function enemyTurn(){
+ if(s.enemyHp<=0||s.won||s.dead)return;
+ if(s.dodge){s.dodge=false;say("تفاديت هجوم العدو بالكامل!");return}
+ let raw=s.enemyAtk-Math.floor(s.def*.55);if(s.guard)raw=Math.ceil(raw*.4);s.guard=false;
+ let dmg=Math.max(2,raw);s.hp=Math.max(0,s.hp-dmg);say(`${s.enemy} هاجمك وألحق ${dmg} ضرر.`);if(s.hp<=0){s.dead=true;showModal("سقط المحارب","نفدت صحتك. أعد المحاولة وغيّر أسلوب القتال.","إعادة المحاولة",()=>reset())}
+}
+function hit(mult=1,kind="هجوم"){
+ if(s.won||s.dead)return;
+ let dmg=Math.max(1,Math.floor((s.atk+Math.floor(Math.random()*5)-s.enemyDef)*mult));
+ s.enemyHp=Math.max(0,s.enemyHp-dmg);$("hero").classList.remove("swing");void $("hero").offsetWidth;$("hero").classList.add("swing");$("monster").classList.add("hit");setTimeout(()=>$("monster").classList.remove("hit"),220);
+ say(`${kind}: سببت ${dmg} ضررًا.`);
+ if(s.enemyHp<=0){victory();return}
+ enemyTurn();render();
+}
+function victory(){
+ s.enemyHp=0;s.gold+=18+Math.floor(Math.random()*13);s.xp+=45;s.bag.push("ناب ذئب");say("انتصرت! حصلت على 45 خبرة وذهب وغنيمة: ناب ذئب.");
+ if(s.xp>=s.nextXp){s.xp-=s.nextXp;s.level++;s.nextXp=Math.floor(s.nextXp*1.5);s.maxHp+=20;s.hp=Math.min(s.maxHp,s.hp+35);s.atk+=4;s.def+=2;s.potions++;say("ارتفع مستواك! +4 هجوم و+2 دفاع و+20 صحة قصوى وجرعة علاج.");}
+ s.won=true;render();showModal("انتصار! 🏆",`هزمت ${s.enemy}. حصلت على الذهب والخبرة وناب ذئب. مستواك الآن ${s.level}.`,"العدو التالي",nextEnemy);
+}
+function nextEnemy(){
+ s.enemyCount++;s.won=false;s.guard=false;s.dodge=false;
+ if(s.enemyCount===1){s.enemy="هيكل عظمي حارس";s.enemyMax=90;s.enemyAtk=18;s.enemyDef=4;s.enemyHp=90;s.gold+=5;s.hp=Math.min(s.maxHp,s.hp+20);say("دخلت أطلال الحراس. استعد لمواجهة هيكل عظمي أقوى.");}
+ else {s.enemy="غول الكهف";s.enemyMax=150;s.enemyAtk=23;s.enemyDef=6;s.enemyHp=150;s.hp=Math.min(s.maxHp,s.hp+25);say("ظهر زعيم الغول! اضرب بحذر واستخدم جرعاتك.");}
+ $("modal").classList.add("hidden");render();
+}
+function showModal(title,txt,btn,fn){$("modalTitle").textContent=title;$("modalText").textContent=txt;$("modalBtn").textContent=btn;$("modalBtn").onclick=fn;$("modal").classList.remove("hidden")}
+function reset(){s=initial();$("modal").classList.add("hidden");$("log").textContent="وصلتَ إلى الغابة الملعونة. ذئب الظلال يعترض طريقك. اهزمه لتحصل على الخبرة والغنائم.";render()}
+$("attackBtn").onclick=()=>hit(1,"هجوم سريع");$("heavyBtn").onclick=()=>hit(1.65,"ضربة ثقيلة");
+$("dodgeBtn").onclick=()=>{if(s.won||s.dead)return;s.dodge=true;say("استعددت للمراوغة. هجوم العدو القادم لن يصيبك، لكنك لن تهاجم هذه الجولة.");enemyTurn();render()};
+$("moveBtn").onclick=()=>{if(s.won||s.dead)return;s.move++;say(s.move%2?"تحركت جانبًا وأصبحت في وضع أفضل. هجوم العدو أقل تأثيرًا هذه الجولة.":"عدت إلى وضع القتال. لا تبتعد كثيرًا!");s.guard=true;enemyTurn();render()};
+$("potionBtn").onclick=()=>{if(s.won||s.dead)return;if(s.potions<=0){say("لا توجد جرعات علاج متبقية!");return}if(s.hp===s.maxHp){say("صحتك كاملة، احتفظ بالجرعة.");return}s.potions--;let heal=Math.min(40,s.maxHp-s.hp);s.hp+=heal;say(`استخدمت جرعة واستعدت ${heal} صحة.`);enemyTurn();render()};
+$("lootBtn").onclick=()=>showModal("الحقيبة 🎒",`الغنائم: ${s.bag.length?s.bag.join("، "):"لا توجد غنائم بعد"}\nالذهب: ${s.gold}\nجرعات العلاج: ${s.potions}`,"عودة",()=>$("modal").classList.add("hidden"));
+$("resetBtn").onclick=()=>showModal("إعادة اللعب؟","ستبدأ من المستوى الأول وتفقد تقدمك الحالي.","ابدأ من جديد",reset);
+render();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script></body></html>

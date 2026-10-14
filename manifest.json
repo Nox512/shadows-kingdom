@@ -1,0 +1,11 @@
+{
+  "name": "ظلال المملكة المنسية",
+  "short_name": "ظلال المملكة",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#111018",
+  "theme_color": "#111018",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": []
+}

@@ -3,8 +3,7 @@
   "short_name": "ظلال المملكة",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#14251f",
-  "theme_color": "#14251f",
-  "lang": "ar",
-  "dir": "rtl"
+  "background_color": "#102b25",
+  "theme_color": "#102b25",
+  "orientation": "landscape"
 }

@@ -1,97 +1,163 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#111018"><title>ظلال المملكة المنسية</title>
-<link rel="manifest" href="manifest.json">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#101720">
+<title>ظلال المملكة المنسية — 3D</title>
 <style>
-:root{--bg:#111018;--panel:#211f2b;--gold:#f3c969;--red:#e65d68;--green:#79d6a3;--text:#f4f0e8}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 15%,#30263d,#111018 65%);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100dvh;overflow:hidden;touch-action:manipulation}
-#app{max-width:720px;margin:auto;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom);gap:8px}
-header{display:flex;align-items:center;justify-content:space-between;padding:7px 3px}.brand{font-weight:900;font-size:20px;color:var(--gold)}.sub{font-size:12px;color:#b8b2c5}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.card{background:#211f2beF;border:1px solid #494153;border-radius:14px;padding:9px 11px}.statline{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}.bar{height:8px;background:#393443;border-radius:9px;overflow:hidden}.fill{height:100%;transition:width .2s}.hp{background:linear-gradient(90deg,#b82d48,#ff7782)}.xp{background:linear-gradient(90deg,#8b68ff,#e0b4ff)}
-#scene{position:relative;flex:1;min-height:220px;max-height:420px;border:1px solid #4c4057;border-radius:18px;overflow:hidden;background:linear-gradient(#201c31 0%,#3b2940 52%,#171522 100%)}
-.moon{position:absolute;top:12%;left:14%;width:48px;height:48px;border-radius:50%;background:#f3d9a0;box-shadow:0 0 35px #f3d9a066}
-.ruin{position:absolute;bottom:30%;height:45%;width:20%;background:#171522;clip-path:polygon(20% 0,35% 12%,35% 100%,0 100%,0 25%);opacity:.8}.r1{left:4%}.r2{right:8%;transform:scaleX(-1);width:25%}
-.ground{position:absolute;bottom:0;height:31%;width:100%;background:linear-gradient(#282235,#14121d)}
-#hero,#monster{position:absolute;bottom:20%;font-size:clamp(48px,13vw,78px);filter:drop-shadow(0 6px 3px #0008);transition:left .16s,bottom .16s;user-select:none}
-#hero{left:24%;z-index:3}#monster{right:20%;z-index:2;transform:scaleX(-1)}
-#hero.swing{animation:swing .25s}#monster.hit{animation:hit .2s}@keyframes swing{50%{transform:translateX(22px) rotate(-15deg)}}@keyframes hit{50%{filter:brightness(3) drop-shadow(0 0 12px red);transform:scaleX(-1) translateX(12px)}}
-#monsterHpWrap{position:absolute;right:10%;bottom:calc(20% + 70px);width:36%;z-index:4}.enemyname{font-size:12px;text-align:center;margin-bottom:4px;text-shadow:0 2px 3px black}.enemybar{height:7px;border-radius:8px;background:#111;overflow:hidden;border:1px solid #ffffff44}.enemyfill{height:100%;background:#ee5364;transition:width .2s}
-#toast{position:absolute;top:10px;left:10px;right:10px;text-align:center;font-size:13px;font-weight:700;color:var(--gold);text-shadow:0 2px 4px #000;pointer-events:none}
-.log{height:76px;overflow:auto;background:#191722;border:1px solid #393443;border-radius:12px;padding:8px 10px;font-size:12px;color:#c9c3d1;line-height:1.6}.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.btn{border:1px solid #68536c;background:linear-gradient(#393044,#272231);color:var(--text);border-radius:13px;min-height:49px;padding:8px 5px;font-weight:800;font-size:14px}.btn:active{transform:scale(.97)}.primary{border-color:#c89e4c;background:linear-gradient(#6c4b24,#49311e);color:#ffe4a0}.wide{grid-column:span 3}.footer{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#bcb4c8;padding:0 3px}.pill{border:1px solid #51465d;border-radius:20px;padding:5px 9px}
-.modal{position:absolute;inset:0;background:#090810dd;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px}.modalbox{width:100%;max-width:400px;background:#24202e;border:1px solid #756080;border-radius:20px;padding:20px;text-align:center}.modal h2{color:var(--gold)}.hidden{display:none!important}
-@media(min-width:600px){#app{padding-top:12px;padding-bottom:12px}.actions .btn{font-size:15px}#scene{max-height:430px}}
-</style></head>
-<body><main id="app">
-<header><div><div class="brand">ظلال المملكة المنسية</div><div class="sub">الفصل الأول · الغابة الملعونة</div></div><div class="pill" id="level">المستوى 1</div></header>
-<section class="stats">
- <div class="card"><div class="statline"><b>❤️ الصحة</b><span id="hpText">120 / 120</span></div><div class="bar"><div id="hpFill" class="fill hp" style="width:100%"></div></div></div>
- <div class="card"><div class="statline"><b>✨ الخبرة</b><span id="xpText">0 / 100</span></div><div class="bar"><div id="xpFill" class="fill xp" style="width:0%"></div></div></div>
- <div class="card"><div class="statline"><b>⚔️ الهجوم</b><span id="atkText">18</span></div><div class="statline" style="margin:7px 0 0"><b>🛡️ الدفاع</b><span id="defText">8</span></div></div>
- <div class="card"><div class="statline"><b>🪙 الذهب</b><span id="goldText">0</span></div><div class="statline" style="margin:7px 0 0"><b>🧪 الجرعات</b><span id="potText">2</span></div></div>
-</section>
-<section id="scene" aria-label="ساحة المعركة">
- <div class="moon"></div><div class="ruin r1"></div><div class="ruin r2"></div><div class="ground"></div>
- <div id="toast">تحرّك بحذر… الذئب يراقبك!</div><div id="hero">🧙🏻‍♂️</div><div id="monster">🐺</div>
- <div id="monsterHpWrap"><div class="enemyname" id="enemyName">ذئب الظلال · المستوى 1</div><div class="enemybar"><div class="enemyfill" id="enemyFill" style="width:100%"></div></div></div>
-</section>
-<div class="log" id="log" aria-live="polite">وصلتَ إلى الغابة الملعونة. ذئب الظلال يعترض طريقك. اهزمه لتحصل على الخبرة والغنائم.</div>
-<section class="actions">
- <button class="btn" id="moveBtn">↔️ تحرّك</button><button class="btn primary" id="attackBtn">⚔️ هجوم</button><button class="btn" id="heavyBtn">💥 ضربة ثقيلة</button>
- <button class="btn" id="dodgeBtn">💨 مراوغة</button><button class="btn" id="potionBtn">🧪 علاج</button><button class="btn" id="lootBtn">🎒 الحقيبة</button>
-</section>
-<div class="footer"><span id="quest">المهمة: اهزم ذئب الظلال</span><button class="btn" style="min-height:34px;padding:5px 10px" id="resetBtn">إعادة اللعب</button></div>
-</main>
-<div id="modal" class="modal hidden"><div class="modalbox"><h2 id="modalTitle">انتصرت!</h2><p id="modalText"></p><button class="btn primary wide" id="modalBtn">متابعة</button></div></div>
+:root{--gold:#ffd27a;--panel:#101a25dd;--line:#78909c66;--white:#f4f5f2}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b1118;color:var(--white);font-family:system-ui,-apple-system,sans-serif;touch-action:none}
+#game{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}
+.hud{position:fixed;inset:0;pointer-events:none;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom);display:flex;flex-direction:column;justify-content:space-between}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.brand{font-weight:900;color:var(--gold);font-size:17px;text-shadow:0 2px 8px #000}.sub{font-size:11px;color:#d0dbe0}.stats{display:flex;flex-direction:column;gap:6px;width:min(48%,210px)}.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 9px;backdrop-filter:blur(8px);box-shadow:0 5px 18px #0004}.row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}.bar{height:7px;background:#26323c;border-radius:8px;overflow:hidden}.fill{height:100%;transition:width .2s}.hp{background:linear-gradient(90deg,#c72f47,#ff7c75)}.xp{background:linear-gradient(90deg,#7b63e9,#d2a7ff)}.boss{position:absolute;top:105px;left:50%;transform:translateX(-50%);width:min(68%,330px);text-align:center;display:none}.bossname{font-size:12px;text-shadow:0 2px 5px #000;font-weight:800;margin-bottom:5px}.boss .bar{height:9px;border:1px solid #ffffff55}.boss .fill{background:linear-gradient(90deg,#a30e31,#ff6c58)}
+.bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;padding-bottom:10px}.hint{max-width:45%;font-size:11px;background:#0b121bd9;border:1px solid var(--line);padding:8px 10px;border-radius:10px;line-height:1.4}.controls{display:grid;grid-template-columns:repeat(2,58px);gap:7px;pointer-events:auto}.btn{border:1px solid #b9c8d266;background:linear-gradient(160deg,#253747ee,#101b27f2);color:white;border-radius:15px;min-height:52px;min-width:58px;font-size:22px;font-weight:900;box-shadow:0 5px 14px #0005;touch-action:manipulation}.btn:active{transform:scale(.94);filter:brightness(1.3)}.attack{background:linear-gradient(150deg,#8b4c28ee,#3d201cee);border-color:#ffc16b99}.heal{font-size:20px}.center{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#050b12b8;backdrop-filter:blur(5px);padding:24px;z-index:5}.panel{max-width:360px;width:100%;background:linear-gradient(150deg,#263847,#111922);border:1px solid #9eafbc66;border-radius:22px;padding:24px;text-align:center;box-shadow:0 25px 90px #000a}.panel h1{margin:0 0 8px;color:var(--gold);font-size:25px}.panel p{font-size:14px;line-height:1.7;color:#d4e0e6}.start{border:1px solid #ffda91;background:linear-gradient(#8d5b2d,#4e301d);color:#fff0c8;border-radius:13px;padding:13px 24px;font-weight:900;font-size:16px}.hidden{display:none!important}.toast{position:fixed;left:50%;top:48%;transform:translate(-50%,-50%);padding:9px 15px;background:#071019dd;border:1px solid #ffd27a66;border-radius:12px;color:#ffe0a0;font-size:13px;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap}.toast.show{opacity:1}
+@media(min-width:700px){.controls{grid-template-columns:repeat(2,66px)}.btn{min-width:66px;min-height:60px}.brand{font-size:20px}.stats{width:220px}}
+</style>
+</head>
+<body>
+<div id="game"></div>
+<div class="hud">
+ <div class="top">
+  <div><div class="brand">ظلال المملكة المنسية</div><div class="sub">الفصل الأول · الغابة الملعونة · 3D</div></div>
+  <div class="stats">
+   <div class="stat"><div class="row"><b>❤️ الصحة</b><span id="hpText">120 / 120</span></div><div class="bar"><div id="hpFill" class="fill hp" style="width:100%"></div></div></div>
+   <div class="stat"><div class="row"><b>✨ الخبرة · مستوى <span id="level">1</span></b><span id="xpText">0 / 100</span></div><div class="bar"><div id="xpFill" class="fill xp" style="width:0%"></div></div></div>
+   <div class="stat"><div class="row"><b>🪙 الذهب</b><span id="goldText">0</span></div><div class="row" style="margin:4px 0 0"><b>⚔️ الهجوم</b><span id="atkText">18</span></div></div>
+  </div>
+ </div>
+ <div class="boss" id="boss"><div class="bossname" id="bossName">ذئب الظلال</div><div class="bar"><div class="fill" id="bossFill" style="width:100%"></div></div></div>
+ <div class="bottom">
+  <div class="hint" id="hint">حرّك المحارب بالأزرار ◀ ▶ ▲ ▼<br>اقترب من الوحش ثم اضغط ⚔️</div>
+  <div class="controls">
+   <button class="btn" id="up" aria-label="للأمام">▲</button><button class="btn attack" id="attack">⚔️</button>
+   <button class="btn" id="left" aria-label="يسار">◀</button><button class="btn heal" id="heal">🧪</button>
+   <button class="btn" id="down" aria-label="للخلف">▼</button><button class="btn" id="right" aria-label="يمين">▶</button>
+  </div>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="center" id="intro"><div class="panel"><h1>ظلال المملكة المنسية</h1><p>نسخة تجريبية ثلاثية الأبعاد.<br>استكشف الغابة، تحرّك حول الوحش، واضربه بالسيف.<br>اجمع الخبرة والذهب وارتقِ بمستواك.</p><button class="start" id="start">ابدأ المغامرة</button></div></div>
+<div class="center hidden" id="end"><div class="panel"><h1 id="endTitle">انتصار!</h1><p id="endText"></p><button class="start" id="continue">متابعة</button></div></div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
+(()=> {
 const $=id=>document.getElementById(id);
-const initial=()=>({level:1,hp:120,maxHp:120,xp:0,nextXp:100,atk:18,def:8,gold:0,potions:2,enemyHp:65,enemyMax:65,enemy:"ذئب الظلال",enemyAtk:15,enemyDef:2,enemyCount:0,won:false,dead:false,guard:false,dodge:false,bag:[],move:0});
-let s=initial();
-function say(t){$("log").innerHTML=t+"<br>"+$("log").innerHTML;$("toast").textContent=t}
-function render(){
- $("level").textContent="المستوى "+s.level;$("hpText").textContent=`${s.hp} / ${s.maxHp}`;$("hpFill").style.width=(s.hp/s.maxHp*100)+"%";
- $("xpText").textContent=`${s.xp} / ${s.nextXp}`;$("xpFill").style.width=(s.xp/s.nextXp*100)+"%";
- $("atkText").textContent=s.atk;$("defText").textContent=s.def;$("goldText").textContent=s.gold;$("potText").textContent=s.potions;
- $("enemyName").textContent=s.enemy+" · المستوى "+(s.enemyCount+1);$("enemyFill").style.width=Math.max(0,s.enemyHp/s.enemyMax*100)+"%";
- $("monster").textContent=s.enemyCount===0?"🐺":s.enemyCount===1?"🦴":"👹";
- $("monster").style.opacity=s.enemyHp<=0?".15":"1";$("hero").textContent=s.level>=3?"🗡️":"🧙🏻‍♂️";
- $("quest").textContent=s.won?"المهمة: انتصار! ابحث عن العدو التالي":s.dead?"المهمة: أعد المحاولة":"المهمة: اهزم "+s.enemy;
- $("attackBtn").disabled=s.won||s.dead;$("heavyBtn").disabled=s.won||s.dead;
+if(!window.THREE){$('intro').classList.remove('hidden');$('intro').querySelector('p').textContent='تعذر تحميل محرك 3D. تأكد من اتصال الإنترنت ثم حدّث الصفحة.';return}
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x101b26);scene.fog=new THREE.FogExp2(0x101b26,.035);
+const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,150);
+camera.position.set(0,7,10);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;$('game').appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xb8d7ff,0x182116,2.0));
+const moonLight=new THREE.DirectionalLight(0xb8d7ff,2.3);moonLight.position.set(-5,10,4);moonLight.castShadow=true;moonLight.shadow.mapSize.set(1024,1024);scene.add(moonLight);
+const warm=new THREE.PointLight(0xffa34f,16,13);warm.position.set(3,2,1);scene.add(warm);
+const mat=(c,rough=.85,metal=0)=>new THREE.MeshStandardMaterial({color:c,roughness:rough,metalness:metal});
+const groundMat=mat(0x26382d),stone=mat(0x46515a),bark=mat(0x34271f),leaf=mat(0x183a32),leaf2=mat(0x254b3b),gold=mat(0xe8b95b,.4,.6),dark=mat(0x151b27),armor=mat(0x334353,.45,.45),red=mat(0x7e2530),bone=mat(0xd0c8a7),glow= new THREE.MeshStandardMaterial({color:0x70d5ff,emissive:0x1b83b6,emissiveIntensity:1.4});
+function mesh(geo,material,x=0,y=0,z=0,cast=true){const m=new THREE.Mesh(geo,material);m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=true;scene.add(m);return m}
+const floor=mesh(new THREE.PlaneGeometry(90,90),groundMat,0,-.18,0,false);floor.rotation.x=-Math.PI/2;
+const grid=new THREE.GridHelper(90,45,0x3b5549,0x2e443a);grid.position.y=-.16;grid.material.transparent=true;grid.material.opacity=.22;scene.add(grid);
+// atmospheric moon and ruins
+const moon=mesh(new THREE.SphereGeometry(1.05,24,16),mat(0xdce8df,.5),-9,9,-20,false);moon.material.emissive=new THREE.Color(0x667d91);moon.material.emissiveIntensity=.65;
+for(let i=0;i<17;i++){
+ const x=(Math.random()-.5)*34,z=-Math.random()*31-2;
+ const h=2+Math.random()*3.7;
+ const trunk=mesh(new THREE.CylinderGeometry(.18,.34,h,7),bark,x,h/2-.1,z);
+ const crown=mesh(new THREE.ConeGeometry(1.1+Math.random()*.6,2.5+Math.random()*2,7),Math.random()>.5?leaf:leaf2,x,h+1,z);
+ crown.rotation.y=Math.random()*3;
 }
-function enemyTurn(){
- if(s.enemyHp<=0||s.won||s.dead)return;
- if(s.dodge){s.dodge=false;say("تفاديت هجوم العدو بالكامل!");return}
- let raw=s.enemyAtk-Math.floor(s.def*.55);if(s.guard)raw=Math.ceil(raw*.4);s.guard=false;
- let dmg=Math.max(2,raw);s.hp=Math.max(0,s.hp-dmg);say(`${s.enemy} هاجمك وألحق ${dmg} ضرر.`);if(s.hp<=0){s.dead=true;showModal("سقط المحارب","نفدت صحتك. أعد المحاولة وغيّر أسلوب القتال.","إعادة المحاولة",()=>reset())}
+for(let i=0;i<8;i++){
+ const x=(Math.random()-.5)*24,z=-10-Math.random()*20;
+ const rock=mesh(new THREE.BoxGeometry(1.6+Math.random(),1.2+Math.random(),1.1),stone,x,.25,z);rock.rotation.set(Math.random()*.2,Math.random()*2,Math.random()*.15);
 }
-function hit(mult=1,kind="هجوم"){
- if(s.won||s.dead)return;
- let dmg=Math.max(1,Math.floor((s.atk+Math.floor(Math.random()*5)-s.enemyDef)*mult));
- s.enemyHp=Math.max(0,s.enemyHp-dmg);$("hero").classList.remove("swing");void $("hero").offsetWidth;$("hero").classList.add("swing");$("monster").classList.add("hit");setTimeout(()=>$("monster").classList.remove("hit"),220);
- say(`${kind}: سببت ${dmg} ضررًا.`);
- if(s.enemyHp<=0){victory();return}
- enemyTurn();render();
+// player low poly warrior
+function makeWarrior(){
+ const g=new THREE.Group();
+ function part(geo,ma,x,y,z){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;g.add(o);return o}
+ part(new THREE.CylinderGeometry(.38,.48,.75,7),armor,0,1.15,0);
+ part(new THREE.SphereGeometry(.31,10,8),mat(0xc99c76),0,1.75,0);
+ part(new THREE.ConeGeometry(.36,.5,7),dark,0,2.03,0);
+ part(new THREE.BoxGeometry(.55,.13,.55),gold,0,1.45,.03);
+ const cape=part(new THREE.ConeGeometry(.5,1.0,5),red,0,.93,-.28);cape.rotation.x=-.22;
+ part(new THREE.CylinderGeometry(.1,.12,.5,6),armor,-.48,1.22,0).rotation.z=-.35;
+ part(new THREE.CylinderGeometry(.1,.12,.5,6),armor,.48,1.22,0).rotation.z=.35;
+ const leg1=part(new THREE.CylinderGeometry(.13,.16,.52,6),dark,-.19,.42,0);leg1.rotation.z=-.05;
+ const leg2=part(new THREE.CylinderGeometry(.13,.16,.52,6),dark,.19,.42,0);
+ const sword=part(new THREE.BoxGeometry(.1,.95,.13),gold,.61,1.18,.12);sword.rotation.z=-.35;
+ const blade=part(new THREE.ConeGeometry(.11,.42,4),mat(0xd8e5e7,.25,.8),.77,1.78,.12);blade.rotation.z=-.35;
+ g.userData.sword=sword;g.userData.blade=blade;g.userData.cape=cape;
+ scene.add(g);return g;
 }
-function victory(){
- s.enemyHp=0;s.gold+=18+Math.floor(Math.random()*13);s.xp+=45;s.bag.push("ناب ذئب");say("انتصرت! حصلت على 45 خبرة وذهب وغنيمة: ناب ذئب.");
- if(s.xp>=s.nextXp){s.xp-=s.nextXp;s.level++;s.nextXp=Math.floor(s.nextXp*1.5);s.maxHp+=20;s.hp=Math.min(s.maxHp,s.hp+35);s.atk+=4;s.def+=2;s.potions++;say("ارتفع مستواك! +4 هجوم و+2 دفاع و+20 صحة قصوى وجرعة علاج.");}
- s.won=true;render();showModal("انتصار! 🏆",`هزمت ${s.enemy}. حصلت على الذهب والخبرة وناب ذئب. مستواك الآن ${s.level}.`,"العدو التالي",nextEnemy);
+function makeWolf(){
+ const g=new THREE.Group();
+ function p(geo,ma,x,y,z){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;g.add(o);return o}
+ const fur=mat(0x4b5863),furDark=mat(0x222d39),eye=new THREE.MeshStandardMaterial({color:0xff4a5e,emissive:0xd10b30,emissiveIntensity:2});
+ p(new THREE.BoxGeometry(1.35,.62,.58),fur,0,.72,0);
+ p(new THREE.SphereGeometry(.38,9,8),fur, .68,.93,.02);
+ p(new THREE.ConeGeometry(.16,.42,5),furDark,.54,1.26,-.13).rotation.z=-.25;
+ p(new THREE.ConeGeometry(.16,.42,5),furDark,.82,1.26,-.13).rotation.z=-.25;
+ p(new THREE.ConeGeometry(.15,.35,5),furDark,1.0,.79,.03).rotation.z=-Math.PI/2;
+ p(new THREE.SphereGeometry(.065,8,6),eye,.86,1.0,.32);
+ p(new THREE.CylinderGeometry(.11,.13,.48,5),furDark,-.42,.35,.2).rotation.z=-.18;
+ p(new THREE.CylinderGeometry(.11,.13,.48,5),furDark,.42,.35,.2).rotation.z=.18;
+ p(new THREE.CylinderGeometry(.11,.13,.48,5),furDark,-.42,.35,-.2).rotation.z=-.18;
+ p(new THREE.CylinderGeometry(.11,.13,.48,5),furDark,.42,.35,-.2).rotation.z=.18;
+ p(new THREE.ConeGeometry(.15,.7,5),furDark,-.8,.82,0).rotation.z=Math.PI/2;
+ scene.add(g);return g;
 }
-function nextEnemy(){
- s.enemyCount++;s.won=false;s.guard=false;s.dodge=false;
- if(s.enemyCount===1){s.enemy="هيكل عظمي حارس";s.enemyMax=90;s.enemyAtk=18;s.enemyDef=4;s.enemyHp=90;s.gold+=5;s.hp=Math.min(s.maxHp,s.hp+20);say("دخلت أطلال الحراس. استعد لمواجهة هيكل عظمي أقوى.");}
- else {s.enemy="غول الكهف";s.enemyMax=150;s.enemyAtk=23;s.enemyDef=6;s.enemyHp=150;s.hp=Math.min(s.maxHp,s.hp+25);say("ظهر زعيم الغول! اضرب بحذر واستخدم جرعاتك.");}
- $("modal").classList.add("hidden");render();
+function makeSkeleton(){
+ const g=new THREE.Group();
+ function p(geo,ma,x,y,z){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.castShadow=true;g.add(o);return o}
+ p(new THREE.CylinderGeometry(.3,.38,.7,7),bone,0,.9,0);
+ p(new THREE.SphereGeometry(.29,9,7),bone,0,1.48,0);
+ p(new THREE.BoxGeometry(.45,.08,.12),dark,0,1.52,.25);
+ p(new THREE.CylinderGeometry(.08,.1,.55,6),bone,-.42,.94,0).rotation.z=-.4;
+ p(new THREE.CylinderGeometry(.08,.1,.55,6),bone,.42,.94,0).rotation.z=.4;
+ p(new THREE.CylinderGeometry(.12,.13,.5,6),dark,-.16,.38,0);
+ p(new THREE.CylinderGeometry(.12,.13,.5,6),dark,.16,.38,0);
+ const sw=p(new THREE.BoxGeometry(.09,.9,.09),gold,.65,1.05,.05);sw.rotation.z=-.3;
+ scene.add(g);return g;
 }
-function showModal(title,txt,btn,fn){$("modalTitle").textContent=title;$("modalText").textContent=txt;$("modalBtn").textContent=btn;$("modalBtn").onclick=fn;$("modal").classList.remove("hidden")}
-function reset(){s=initial();$("modal").classList.add("hidden");$("log").textContent="وصلتَ إلى الغابة الملعونة. ذئب الظلال يعترض طريقك. اهزمه لتحصل على الخبرة والغنائم.";render()}
-$("attackBtn").onclick=()=>hit(1,"هجوم سريع");$("heavyBtn").onclick=()=>hit(1.65,"ضربة ثقيلة");
-$("dodgeBtn").onclick=()=>{if(s.won||s.dead)return;s.dodge=true;say("استعددت للمراوغة. هجوم العدو القادم لن يصيبك، لكنك لن تهاجم هذه الجولة.");enemyTurn();render()};
-$("moveBtn").onclick=()=>{if(s.won||s.dead)return;s.move++;say(s.move%2?"تحركت جانبًا وأصبحت في وضع أفضل. هجوم العدو أقل تأثيرًا هذه الجولة.":"عدت إلى وضع القتال. لا تبتعد كثيرًا!");s.guard=true;enemyTurn();render()};
-$("potionBtn").onclick=()=>{if(s.won||s.dead)return;if(s.potions<=0){say("لا توجد جرعات علاج متبقية!");return}if(s.hp===s.maxHp){say("صحتك كاملة، احتفظ بالجرعة.");return}s.potions--;let heal=Math.min(40,s.maxHp-s.hp);s.hp+=heal;say(`استخدمت جرعة واستعدت ${heal} صحة.`);enemyTurn();render()};
-$("lootBtn").onclick=()=>showModal("الحقيبة 🎒",`الغنائم: ${s.bag.length?s.bag.join("، "):"لا توجد غنائم بعد"}\nالذهب: ${s.gold}\nجرعات العلاج: ${s.potions}`,"عودة",()=>$("modal").classList.add("hidden"));
-$("resetBtn").onclick=()=>showModal("إعادة اللعب؟","ستبدأ من المستوى الأول وتفقد تقدمك الحالي.","ابدأ من جديد",reset);
-render();
-if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
-</script></body></html>
+const hero=makeWarrior();hero.position.set(-2,0,3);
+let enemy=makeWolf();enemy.position.set(2,0,-1);
+let enemyType=0;
+let hp=120,maxHp=120,xp=0,nextXp=100,level=1,goldCount=0,atk=18,potions=2,enemyHp=70,enemyMax=70,enemyAtk=10,dead=false,started=false,attacking=0,invuln=0;
+const keys={up:false,down:false,left:false,right:false};
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),1500)}
+function updateHud(){
+ $('hpText').textContent=`${Math.ceil(hp)} / ${maxHp}`;$('hpFill').style.width=Math.max(0,hp/maxHp*100)+'%';
+ $('xpText').textContent=`${xp} / ${nextXp}`;$('xpFill').style.width=(xp/nextXp*100)+'%';
+ $('level').textContent=level;$('goldText').textContent=goldCount;$('atkText').textContent=atk;
+ $('boss').style.display=enemyHp>0?'block':'none';$('bossName').textContent=enemyType===0?'ذئب الظلال':enemyType===1?'هيكل الأطلال':'غول الكهف';$('bossFill').style.width=Math.max(0,enemyHp/enemyMax*100)+'%';
+}
+function enemyHit(){if(dead||enemyHp<=0)return;if(invuln>0){toast('تفاديت الضربة!');return}const dmg=Math.max(4,enemyAtk-Math.floor(level*1.4));hp=Math.max(0,hp-dmg);invuln=1.1;toast(`الوحش ضربك -${dmg} صحة`);updateHud();if(hp<=0){dead=true;$('endTitle').textContent='سقط المحارب';$('endText').textContent='انتهت المغامرة. أعد المحاولة واهزم وحوش الغابة.';$('continue').textContent='إعادة المحاولة';$('continue').onclick=reset;$('end').classList.remove('hidden')}}
+function reset(){hp=maxHp=120;xp=0;nextXp=100;level=1;goldCount=0;atk=18;potions=2;enemyType=0;enemyHp=enemyMax=70;enemyAtk=10;dead=false;hero.position.set(-2,0,3);scene.remove(enemy);enemy=makeWolf();enemy.position.set(2,0,-1);$('end').classList.add('hidden');updateHud()}
+function nextEnemy(){enemyType++;if(enemyType>2)enemyType=0;scene.remove(enemy);if(enemyType===1){enemy=makeSkeleton();enemy.position.set(2,0,-1);enemyHp=enemyMax=105;enemyAtk=14;toast('ظهر حارس الأطلال!')}else if(enemyType===2){enemy=makeWolf();enemy.scale.setScalar(1.35);enemy.position.set(2,0,-1);enemyHp=enemyMax=165;enemyAtk=19;toast('ظهر غول الكهف!')}else{enemy=makeWolf();enemy.position.set(2,0,-1);enemyHp=enemyMax=80;enemyAtk=12;toast('ذئب جديد يقترب!')}updateHud()}
+function attack(){if(!started||dead||attacking>0)return;const dx=enemy.position.x-hero.position.x,dz=enemy.position.z-hero.position.z,dist=Math.hypot(dx,dz);if(dist>3.4){toast('اقترب من الوحش أولًا!');return}attacking=.42;const dmg=atk+Math.floor(Math.random()*8);enemyHp=Math.max(0,enemyHp-dmg);hero.userData.sword.rotation.z=-1.35;toast(`ضربة سيف! -${dmg}`);if(enemyHp<=0){goldCount+=20+Math.floor(Math.random()*20);xp+=45;toast('انتصار! +45 خبرة وذهب');if(xp>=nextXp){xp-=nextXp;level++;nextXp=Math.floor(nextXp*1.5);maxHp+=20;hp=Math.min(maxHp,hp+35);atk+=4;toast('ارتفع مستواك! هجوم وصحة أعلى')}setTimeout(()=>{nextEnemy()},850)}else{setTimeout(enemyHit,420)}updateHud()}
+function heal(){if(!started||dead)return;if(potions<=0){toast('نفدت الجرعات!');return}if(hp>=maxHp){toast('صحتك كاملة');return}potions--;hp=Math.min(maxHp,hp+38);toast('استعدت 38 صحة');updateHud()}
+function move(dir,on){keys[dir]=on}
+[['up','up'],['down','down'],['left','left'],['right','right']].forEach(([id,d])=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);move(d,true)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,e=>move(d,false)))});
+$('attack').addEventListener('pointerdown',e=>{e.preventDefault();attack()});$('heal').addEventListener('pointerdown',e=>{e.preventDefault();heal()});
+$('start').onclick=()=>{$('intro').classList.add('hidden');started=true;toast('اقترب من الذئب واضربه بالسيف')};
+$('continue').onclick=reset;
+const clock=new THREE.Clock();
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;
+if(started&&!dead){
+ let vx=(keys.right?1:0)-(keys.left?1:0),vz=(keys.down?1:0)-(keys.up?1:0);const len=Math.hypot(vx,vz)||1;vx/=len;vz/=len;
+ if(vx||vz){hero.position.x+=vx*dt*4.1;hero.position.z+=vz*dt*4.1;hero.rotation.y=Math.atan2(vx,vz);hero.userData.cape.rotation.x=-.22+Math.sin(t*13)*.08}
+ hero.position.x=THREE.MathUtils.clamp(hero.position.x,-10,10);hero.position.z=THREE.MathUtils.clamp(hero.position.z,-13,8);
+ const dx=hero.position.x-enemy.position.x,dz=hero.position.z-enemy.position.z,dist=Math.hypot(dx,dz);
+ if(enemyHp>0&&dist>1.7){enemy.position.x+=dx/dist*dt*(enemyType===2?1.25:.8);enemy.position.z+=dz/dist*dt*(enemyType===2?1.25:.8);enemy.rotation.y=Math.atan2(dx,dz)}
+ if(enemyHp>0&&dist<1.75&&invuln<=0){enemyHit()}
+ if(attacking>0){attacking-=dt;if(attacking<=0){hero.userData.sword.rotation.z=-.35;}}
+ if(invuln>0)invuln-=dt;
+}
+const target=new THREE.Vector3(hero.position.x,0,hero.position.z);
+camera.position.x+=(hero.position.x*.28-camera.position.x)*.06;camera.position.z+=(hero.position.z+9-camera.position.z)*.06;camera.lookAt(target.x,1,target.z-1.5);
+warm.position.x=hero.position.x+2;warm.position.z=hero.position.z+1;warm.intensity=15+Math.sin(t*2)*2;
+renderer.render(scene,camera);
+}
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+updateHud();animate();
+})();
+</script>
+</body></html>

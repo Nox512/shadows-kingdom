@@ -89,11 +89,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let pairs = [];
       if (i === 1) {
-        pairs = [[0,0, 4,0], [0,4, 4,4]];
+        // لوحة 4x4 مصممة بذكاء لضمان تغطية كل المربعات الـ 16 بسهولة
+        size = 4;
+        pairs = [[0,0, 3,0], [0,3, 3,3]];
       } else if (i === 2) {
-        pairs = [[0,0, 0,4], [4,0, 4,4]];
+        size = 4;
+        pairs = [[0,0, 0,3], [3,0, 3,3]];
       } else if (i === 3) {
-        pairs = [[0,0, 2,2], [4,0, 4,4]];
+        size = 5;
+        pairs = [[0,0, 4,0], [0,4, 4,4]];
       } else {
         const pairCount = i > 60 ? 4 : (i > 30 ? 3 : 2);
         for (let p = 0; p < pairCount; p++) {
@@ -119,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let levelIndex = 0, paths = {}, active = null, moves = 0, hints = 3, unlocked = 1, completed = {};
   let soundOn = true, audioCtx = null;
 
-  const saveKey='athar-puzzle-v104';
+  const saveKey='athar-puzzle-v105-perfect';
   function loadSave(){try{const s=JSON.parse(localStorage.getItem(saveKey)||'{}');unlocked=Math.max(1,Math.min(LEVELS.length,s.unlocked||1));completed=s.completed||{};hints=s.hints==null?3:s.hints;}catch(e){}}
   function save(){try{localStorage.setItem(saveKey,JSON.stringify({unlocked,completed,hints}));}catch(e){}}
 

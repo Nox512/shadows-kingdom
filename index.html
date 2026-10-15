@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#080e1c">
-<title>تحدي العباقرة — أرباح ومسابقات</title>
+<title>تحدي العباقرة — 100 سؤال</title>
 <style>
 :root{--bg:#080e1c;--panel:#111d34;--gold:#ffe08a;--good:#5ef0c2;--bad:#ff5f78;--text:#f4f7ff;--muted:#aab8d2}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% -10%,#354b76 0%,#111a30 42%,#080e1c 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
@@ -23,147 +23,72 @@ h1{font-size:21px;margin:0}.subtitle{color:var(--muted);font-size:11px}
 .opt-btn.correct{background:linear-gradient(145deg,#17675d,#12473f);border-color:var(--good);color:var(--good)}
 .opt-btn.wrong{background:linear-gradient(145deg,#671725,#47121b);border-color:var(--bad);color:var(--bad)}
 .stats{display:flex;justify-content:space-between;align-items:center;margin-top:15px;font-size:13px;color:var(--muted)}
-.ad-box{background:linear-gradient(145deg,#2a1f10,#3d2c14);border:1px solid #7a5c28;border-radius:16px;padding:15px;text-align:center;margin-top:15px}
-.ad-box p{margin:0 0 10px;font-size:12px;color:var(--gold)}
-.ad-btn{background:linear-gradient(135deg,#ffe79a,#ffbf62);color:#242b3d;border:0;padding:10px 20px;border-radius:10px;font-weight:bold;cursor:pointer}
+.feedback {font-size: 13px; font-weight: bold; margin-top: 10px; min-height: 20px;}
+.feedback.bad {color: var(--bad);}
+.feedback.good {color: var(--good);}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-  <div class="brand"><div class="logo">💡</div><div><h1>تحدي العباقرة</h1><div class="subtitle">أسئلة وألغاز • أرباح حقيقية</div></div></div>
+  <div class="brand"><div class="logo">💡</div><div><h1>تحدي العباقرة</h1><div class="subtitle">100 سؤال تحدي ومعرفة</div></div></div>
   <div class="pill">🏆 النقاط: <span id="score">0</span></div>
 </header>
 
 <section class="card">
-  <div class="q-number" id="qNum">السؤال 1 من 5</div>
+  <div class="q-number" id="qNum">السؤال 1 من 100</div>
   <div class="question" id="qText">جاري تحميل السؤال...</div>
   <div class="options" id="optionsBox"></div>
+  <div class="feedback" id="feedbackMsg"></div>
   <div class="stats">
-    <span>التقدم: <span id="progressText">20%</span></span>
+    <span>التقدم: <span id="progressText">0%</span></span>
     <button id="nextBtn" style="display:none;background:var(--gold);border:0;padding:8px 16px;border-radius:10px;font-weight:bold;cursor:pointer">السؤال التالي ←</button>
   </div>
-</section>
-
-<section class="ad-box">
-  <p>📺 نموذج ربحي (إعلان مكافأة): هل تحتاج مساعدة أو تلميح؟</p>
-  <button class="ad-btn" id="adBtn">مشاهدة إعلان (+50 نقطة)</button>
 </section>
 </div>
 
 <script>
 const QUESTIONS = [
-  {
-    q: "ما هو الحيوان الذي يُسمى 'سفينة الصحراء'؟",
-    options: ["الحصان", "الجمل", "الفيل", "الأسد"],
-    answer: 1
-  },
-  {
-    q: "كم عدد سور القرآن الكريم؟",
-    options: ["112 سورة", "114 سورة", "120 سورة", "110 سورة"],
-    answer: 1
-  },
-  {
-    q: "ما هي عاصمة المملكة العربية السعودية؟",
-    options: ["جدة", "الدمام", "الرياض", "مكة المكرمة"],
-    answer: 2
-  },
-  {
-    q: "أي من هذه العناصر يعتبر معدناً سائلاً في درجة الحرارة العادية؟",
-    options: ["الزئبق", "الحديد", "الذهب", "النحاس"],
-    answer: 0
-  },
-  {
-    q: "ما هو أكبر كوكب في المجموعة الشمسية؟",
-    options: ["المريخ", "زحل", "المشتري", "الأرض"],
-    answer: 2
-  }
-];
-
-let currentIndex = 0;
-let score = 0;
-let answered = false;
-
-const qNumEl = document.getElementById('qNum');
-const qTextEl = document.getElementById('qText');
-const optionsBox = document.getElementById('optionsBox');
-const scoreEl = document.getElementById('score');
-const progressText = document.getElementById('progressText');
-const nextBtn = document.getElementById('nextBtn');
-const adBtn = document.getElementById('adBtn');
-
-function loadQuestion() {
-  answered = false;
-  nextBtn.style.display = 'none';
-  const current = QUESTIONS[currentIndex];
-  
-  qNumEl.textContent = `السؤال ${currentIndex + 1} من ${QUESTIONS.length}`;
-  qTextEl.textContent = current.q;
-  progressText.textContent = Math.round(((currentIndex) / QUESTIONS.length) * 100) + '%';
-  
-  optionsBox.innerHTML = '';
-  current.options.forEach((opt, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'opt-btn';
-    btn.textContent = opt;
-    btn.onclick = () => checkAnswer(idx, btn);
-    optionsBox.appendChild(btn);
-  });
-}
-
-function checkAnswer(selectedIdx, btn) {
-  if (answered) return;
-  answered = true;
-  
-  const current = QUESTIONS[currentIndex];
-  const allBtns = optionsBox.querySelectorAll('.opt-btn');
-  
-  if (selectedIdx === current.answer) {
-    btn.classList.add('correct');
-    score += 10;
-    scoreEl.textContent = score;
-  } else {
-    btn.classList.add('wrong');
-    allBtns[current.answer].classList.add('correct');
-  }
-  
-  nextBtn.style.display = 'block';
-}
-
-nextBtn.onclick = () => {
-  currentIndex++;
-  if (currentIndex < QUESTIONS.length) {
-    loadQuestion();
-  } else {
-    qNumEl.textContent = "انتهى التحدي!";
-    qTextEl.textContent = `أمبرك! جمعت ${score} نقطة بنجاح. 🎉`;
-    optionsBox.innerHTML = '<button class="opt-btn" style="text-align:center" onclick="restartGame()">إعادة اللعب ↺</button>';
-    nextBtn.style.display = 'none';
-    progressText.textContent = '100%';
-  }
-};
-
-window.restartGame = function() {
-  currentIndex = 0;
-  score = 0;
-  scoreEl.textContent = score;
-  loadQuestion();
-};
-
-// محاكاة إعلان المكافأة للأرباح
-adBtn.onclick = () => {
-  adBtn.disabled = true;
-  adBtn.textContent = "جاري تشغيل الإعلان...";
-  setTimeout(() => {
-    score += 50;
-    scoreEl.textContent = score;
-    alert("مبروك! شاهدت الإعلان وحصلت على مكافأة 50 نقطة.");
-    adBtn.disabled = false;
-    adBtn.textContent = "مشاهدة إعلان (+50 نقطة)";
-  }, 1500);
-};
-
-loadQuestion();
-</script>
-</body>
-</html>
+  { q: "ما هو الحيوان الذي يُسمى 'سفينة الصحراء'؟", options: ["الحصان", "الجمل", "الفيل", "الأسد"], answer: 1 },
+  { q: "كم عدد سور القرآن الكريم؟", options: ["112 سورة", "114 سورة", "120 سورة", "110 سورة"], answer: 1 },
+  { q: "ما هي عاصمة المملكة العربية السعودية؟", options: ["جدة", "الدمام", "الرياض", "مكة المكرمة"], answer: 2 },
+  { q: "أي من هذه العناصر يعتبر معدناً سائلاً في درجة الحرارة العادية؟", options: ["الزئبق", "الحديد", "الذهب", "النحاس"], answer: 0 },
+  { q: "ما هو أكبر كوكب في المجموعة الشمسية؟", options: ["المريخ", "زحل", "المشتري", "الأرض"], answer: 2 },
+  { q: "كم عدد أركان الإسلام؟", options: ["4", "5", "6", "3"], answer: 1 },
+  { q: "في أي قارة تقع مصر؟", options: ["آسيا", "أفريقيا", "أوروبا", "أمريكا الشمالية"], answer: 1 },
+  { q: "ما هي عاصمة دولة الإمارات العربية المتحدة؟", options: ["دبي", "الشارقة", "أبوظبي", "العين"], answer: 2 },
+  { q: "ما هو أسرع حيوان بري في العالم؟", options: ["الأسد", "الفهد", "الغزال", "الحصان"], answer: 1 },
+  { q: "كم عدد أركان الإيمان؟", options: ["5", "6", "7", "4"], answer: 1 },
+  { q: "ما هي عاصمة دولة الكويت؟", options: ["الكويت", "الجهراء", "المجمعة", "الصلبيات"], answer: 0 },
+  { q: "ما هو العنصر الكيميائي الذي يرمز له بالرمز (O)؟", options: ["الهيدروجين", "الأكسجين", "النيتروجين", "الكربون"], answer: 1 },
+  { q: "في أي عام هجري كانت غزوة بدر الكبرى؟", options: ["السنة الأولى", "السنة الثانية", "السنة الثالثة", "السنة الرابعة"], answer: 1 },
+  { q: "ما هي عاصمة سلطنة عمان؟", options: ["صلالة", "مسقط", "نزوى", "صُحار"], answer: 1 },
+  { q: "كم عدد عظام جسم الإنسان البالغ؟", options: ["206", "208", "210", "200"], answer: 0 },
+  { q: "ما هو الحيوان المعروف بـ 'ملك الغابة'؟", options: ["النمر", "الأسد", "الفهد", "الدب"], answer: 1 },
+  { q: "ما هي عاصمة مملكة البحرين؟", options: ["المحرق", "المنامة", "رفاع", "السيح"], answer: 1 },
+  { q: "كم تبلغ نسبة الماء في كوكب الأرض تقريبا؟", options: ["50%", "71%", "85%", "30%"], answer: 1 },
+  { q: "من هو النبي الذي ألقي في النار فلم تحرقه؟", options: ["نبي الله موسى", "نبي الله إبراهيم", "نبي الله عيسى", "نبي الله يوسف"], answer: 1 },
+  { q: "ما هي عاصمة دولة قطر؟", options: ["الخور", "الوكرة", "الدوحة", "الريان"], answer: 2 },
+  { q: "ما هو أطول نهر في العالم؟", options: ["نهر الأمازون", "نهر النيل", "نهر المسيسيبي", "نهر دجلة"], answer: 1 },
+  { q: "في أي مدينة وُلد النبي محمد صلى الله عليه وسلم؟", options: ["المدينة المنورة", "مكة المكرمة", "الطائف", "الرياض"], answer: 1 },
+  { q: "ما هي عاصمة المملكة الأردنية الهاشمية؟", options: ["إربد", "الزرقاء", "عمان", "العقبة"], answer: 2 },
+  { q: "ما هو غاز الحياة التنفسي الأساسي للإنسان؟", options: ["ثاني أكسيد الكربون", "الأكسجين", "النيتروجين", "الهيليوم"], answer: 1 },
+  { q: "ما هي عاصمة جمهورية مصر العربية؟", options: ["الإسكندرية", "القاهرة", "الجيزة", "أسوان"], answer: 1 },
+  { q: "كم عدد السجدات في القرآن الكريم؟", options: ["10 سجدات", "14 سجدة", "20 سجدة", "15 سجدة"], answer: 1 },
+  { q: "ما هي عاصمة الجمهورية العربية السورية؟", options: ["حلب", "دمشق", "حمص", "حماة"], answer: 1 },
+  { q: "ما هو أصغر كوكب في المجموعة الشمسية؟", options: ["عطارد", "المريخ", "الزهرة", "نبتون"], answer: 0 },
+  { q: "ما هي عاصمة لبنان؟", options: ["طرابلس", "بيروت", "صيدا", "جبيل"], answer: 1 },
+  { q: "من هو أول خلفاء المسلمين الراشدين؟", options: ["عمر بن الخطاب", "أبو بكر الصديق", "عثمان بن عفان", "علي بن أبي طالب"], answer: 1 },
+  { q: "ما هي عاصمة العراق؟", options: ["البصرة", "الموصل", "بغداد", "أربيل"], answer: 2 },
+  { q: "ما هي عاصمة الجزائر؟", options: ["وهران", "الجزائر", "قسنطينة", "عنابة"], answer: 1 },
+  { q: "ما هو الغاز الأكثر أماناً لنفخ بالونات الاحتفالات؟", options: ["الهيدروجين", "الهيليوم", "الأكسجين", "الأرجون"], answer: 1 },
+  { q: "ما هي عاصمة المغرب؟", options: ["الدار البيضاء", "مراكش", "الرباط", "فاس"], answer: 2 },
+  { q: "ما هي عاصمة تونس؟", options: ["صفاقس", "تونس", "سوسة",بنزرت], answer: 1 },
+  { q: "من هو الصحابي الملقب بـ 'سيف الله المسلول'؟", options: ["عمر بن الخطاب", "خالد بن الوليد", "علي بن أبي طالب", "حمزة بن عبد المطلب"], answer: 1 },
+  { q: "ما هي عاصمة السودان؟", options: ["الخرطوم", "بورتسودان", "أم درمان", "كسلا"], answer: 0 },
+  { q: "أي من هذه الحيوانات يعتبر من الثدييات البحرية؟", options: ["القرش", "الحوت الأزرق", "الأخطبوط", "السرطان"], answer: 1 },
+  { q: "ما هي عاصمة اليمن؟", options: ["عدن", "صنعاء", "تعز", "المكلا"], answer: 1 },
+  { q: "كم عدد دول مجلس التعاون الخليجي؟", options: ["5", "6", "7", "4"], answer: 1 },
+  { q: "ما هي عاصمة فلسطين؟", options: ["حيفا", "القدس", "غزة", "نابلس"], answer: 1 },
+  { q: "ما هي العاصمة الإدارية لتركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "أنطاليا"], answer: 1 },
+  { q: "من هو النبي الذي بنى السفينة بأمر الله؟", options:

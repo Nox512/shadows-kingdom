@@ -13,7 +13,9 @@ body{padding:20px 14px}
 header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .brand{display:flex;align-items:center;gap:10px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#fff0b0,#f4a64d 55%,#d77845);display:grid;place-items:center;color:#1b2234;font-size:25px;font-weight:bold}
 h1{font-size:21px;margin:0}.subtitle{color:var(--muted);font-size:11px}
+.header-actions{display:flex;gap:8px;align-items:center}
 .pill{background:#1b2a43;border:1px solid #4b6285;padding:8px 12px;border-radius:999px;font-size:12px;color:var(--gold)}
+.rules-btn{background:#1b2a43;border:1px solid #4b6285;padding:8px 12px;border-radius:999px;font-size:12px;color:var(--text);cursor:pointer;font-weight:bold}
 .card{background:linear-gradient(145deg,#1c2d4bdf,#111c32f5);border:1px solid #50658a66;border-radius:22px;padding:20px;box-shadow:0 18px 45px #0004;margin-bottom:15px}
 .q-number{color:var(--gold);font-size:12px;font-weight:bold;margin-bottom:8px}
 .question{font-size:18px;font-weight:bold;line-height:1.6;margin-bottom:20px}
@@ -26,13 +28,24 @@ h1{font-size:21px;margin:0}.subtitle{color:var(--muted);font-size:11px}
 .feedback {font-size: 13px; font-weight: bold; margin-top: 10px; min-height: 20px;}
 .feedback.bad {color: var(--bad);}
 .feedback.good {color: var(--good);}
+
+/* Modal Popup */
+.modal{position:fixed;inset:0;background:#080d18c9;display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal.show{display:flex}
+.modal-box{max-width:380px;width:100%;background:#1b2944;border:1px solid #455a7e;border-radius:22px;padding:20px;text-align:right;box-shadow:0 24px 80px #0008}
+.modal-box h2{margin-top:0;color:var(--gold);font-size:18px;text-align:center}
+.modal-box ul{padding-right:20px;color:var(--text);font-size:14px;line-height:1.8}
+.close-btn{width:100%;background:var(--gold);color:#1b2234;border:0;padding:12px;border-radius:12px;font-weight:bold;cursor:pointer;margin-top:15px}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
   <div class="brand"><div class="logo">💡</div><div><h1>تحدي العباقرة</h1><div class="subtitle">100 سؤال تحدي ومعرفة</div></div></div>
-  <div class="pill">🏆 النقاط: <span id="score">0</span></div>
+  <div class="header-actions">
+    <button class="rules-btn" id="openRules">📜 القوانين</button>
+    <div class="pill">🏆 النقاط: <span id="score">0</span></div>
+  </div>
 </header>
 
 <section class="card">
@@ -45,6 +58,20 @@ h1{font-size:21px;margin:0}.subtitle{color:var(--muted);font-size:11px}
     <button id="nextBtn" style="display:none;background:var(--gold);border:0;padding:8px 16px;border-radius:10px;font-weight:bold;cursor:pointer">السؤال التالي ←</button>
   </div>
 </section>
+</div>
+
+<div class="modal" id="rulesModal">
+  <div class="modal-box">
+    <h2>📜 قوانين ونظام اللعبة</h2>
+    <ul>
+      <li>الهدف هو الإجابة على <b>100 سؤال</b> ثقافي متنوع.</li>
+      <li>كل إجابة صحيحة تمنحك <b>+10 نقاط</b>.</li>
+      <li>كل إجابة خاطئة تخصم منك <b>-5 نقاط</b>.</li>
+      <li>لن ينزل رصيد نقاطك تحت الصفر.</li>
+      <li>يمكنك مراجعة تقدمك ونقاطك في أعلى الشاشة.</li>
+    </ul>
+    <button class="close-btn" id="closeRules">فهمت، ابدأ اللعب!</button>
+  </div>
 </div>
 
 <script>
@@ -83,7 +110,7 @@ const QUESTIONS = [
   { q: "ما هي عاصمة الجزائر؟", options: ["وهران", "الجزائر", "قسنطينة", "عنابة"], answer: 1 },
   { q: "ما هو الغاز الأكثر أماناً لنفخ بالونات الاحتفالات؟", options: ["الهيدروجين", "الهيليوم", "الأكسجين", "الأرجون"], answer: 1 },
   { q: "ما هي عاصمة المغرب؟", options: ["الدار البيضاء", "مراكش", "الرباط", "فاس"], answer: 2 },
-  { q: "ما هي عاصمة تونس؟", options: ["صفاقس", "تونس", "سوسة",بنزرت], answer: 1 },
+  { q: "ما هي عاصمة تونس؟", options: ["صفاقس", "تونس", "سوسة", "بنزرت"], answer: 1 },
   { q: "من هو الصحابي الملقب بـ 'سيف الله المسلول'؟", options: ["عمر بن الخطاب", "خالد بن الوليد", "علي بن أبي طالب", "حمزة بن عبد المطلب"], answer: 1 },
   { q: "ما هي عاصمة السودان؟", options: ["الخرطوم", "بورتسودان", "أم درمان", "كسلا"], answer: 0 },
   { q: "أي من هذه الحيوانات يعتبر من الثدييات البحرية؟", options: ["القرش", "الحوت الأزرق", "الأخطبوط", "السرطان"], answer: 1 },
@@ -91,4 +118,102 @@ const QUESTIONS = [
   { q: "كم عدد دول مجلس التعاون الخليجي؟", options: ["5", "6", "7", "4"], answer: 1 },
   { q: "ما هي عاصمة فلسطين؟", options: ["حيفا", "القدس", "غزة", "نابلس"], answer: 1 },
   { q: "ما هي العاصمة الإدارية لتركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "أنطاليا"], answer: 1 },
-  { q: "من هو النبي الذي بنى السفينة بأمر الله؟", options:
+  { q: "من هو النبي الذي بنى السفينة بأمر الله؟", options: ["نوح عليه السلام", "إبراهيم عليه السلام", "موسى عليه السلام", "صالح عليه السلام"], answer: 0 },
+  { q: "ما هي عاصمة فرنسا؟", options: ["لندن", "باريس", "برلين", "مدريد"], answer: 1 },
+  { q: "ما هي عاصمة الصين؟", options: ["شانغهاي", "بكين", "هونغ كونغ", "شنجن"], answer: 1 },
+  { q: "ما هو أطول حيوان في العالم؟", options: ["الفيل", "الزرافة", "الحوت الأزرق", "الخرتيت"], answer: 1 },
+  { q: "ما هي عاصمة اليابان؟", options: ["أوساكا", "طوكيو", "كيوتو", "هيروشيما"], answer: 1 },
+  { q: "كم عدد ألوان علم المملكة العربية السعودية؟", options: ["لون واحد", "لونان", "ثلاثة ألوان", "أربعة ألوان"], answer: 1 },
+  { q: "ما هي عاصمة إيطاليا؟", options: ["روما", "ميلانو", "فلورنسا", "البندقية"], answer: 0 },
+  { q: "من هو مكتشف جاذبية الأرض؟", options: ["أينشتاين", "نيوتن", "إديسون", "جاليليو"], answer: 1 }
+];
+
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+
+const qNumEl = document.getElementById('qNum');
+const qTextEl = document.getElementById('qText');
+const optionsBox = document.getElementById('optionsBox');
+const scoreEl = document.getElementById('score');
+const progressText = document.getElementById('progressText');
+const nextBtn = document.getElementById('nextBtn');
+const feedbackMsg = document.getElementById('feedbackMsg');
+
+const rulesModal = document.getElementById('rulesModal');
+document.getElementById('openRules').onclick = () => rulesModal.classList.add('show');
+document.getElementById('closeRules').onclick = () => rulesModal.classList.remove('show');
+
+function loadQuestion() {
+  answered = false;
+  nextBtn.style.display = 'none';
+  feedbackMsg.textContent = '';
+  feedbackMsg.className = 'feedback';
+  
+  const current = QUESTIONS[currentIndex];
+  
+  qNumEl.textContent = `السؤال ${currentIndex + 1} من ${QUESTIONS.length}`;
+  qTextEl.textContent = current.q;
+  
+  const percent = Math.round(((currentIndex) / QUESTIONS.length) * 100);
+  progressText.textContent = percent + '%';
+  
+  optionsBox.innerHTML = '';
+  current.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(idx, btn);
+    optionsBox.appendChild(btn);
+  });
+}
+
+function checkAnswer(selectedIdx, btn) {
+  if (answered) return;
+  answered = true;
+  
+  const current = QUESTIONS[currentIndex];
+  const allBtns = optionsBox.querySelectorAll('.opt-btn');
+  
+  if (selectedIdx === current.answer) {
+    btn.classList.add('correct');
+    score += 10;
+    feedbackMsg.textContent = 'إجابة صحيحة! (+10 نقاط)';
+    feedbackMsg.className = 'feedback good';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[current.answer].classList.add('correct');
+    score = Math.max(0, score - 5);
+    feedbackMsg.textContent = 'إجابة خاطئة! (-5 نقاط)';
+    feedbackMsg.className = 'feedback bad';
+  }
+  
+  scoreEl.textContent = score;
+  nextBtn.style.display = 'block';
+}
+
+nextBtn.onclick = () => {
+  currentIndex++;
+  if (currentIndex < QUESTIONS.length) {
+    loadQuestion();
+  } else {
+    qNumEl.textContent = "إنهاء التحدي!";
+    qTextEl.textContent = `ألف مبروك يا عمر! أنهيت التحدي وجمعت ${score} نقطة نهائية. 🎉`;
+    optionsBox.innerHTML = '<button class="opt-btn" style="text-align:center" onclick="restartGame()">إعادة اللعب من جديد ↺</button>';
+    nextBtn.style.display = 'none';
+    progressText.textContent = '100%';
+    feedbackMsg.textContent = '';
+  }
+};
+
+window.restartGame = function() {
+  currentIndex = 0;
+  score = 0;
+  scoreEl.textContent = score;
+  loadQuestion();
+};
+
+loadQuestion();
+</script>
+</body>
+</html>

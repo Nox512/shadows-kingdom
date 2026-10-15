@@ -1,35 +1,461 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#080e1c">
+<title>تحدي العباقرة — أرباح ومسابقات</title>
 
-function shuffleAnswers(question) {
-  const answers = question.answers.map((answer, index) => ({
-    text: answer,
-    correct: index === question.correctIndex
+<style>
+:root{
+  --bg:#080e1c;
+  --panel:#111d34;
+  --gold:#ffe08a;
+  --good:#5ef0c2;
+  --bad:#ff5f78;
+  --text:#f4f7ff;
+  --muted:#aab8d2
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  min-height:100%;
+  background:radial-gradient(ellipse at 50% -10%,#354b76 0%,#111a30 42%,#080e1c 100%);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif
+}
+body{padding:20px 14px}
+.app{max-width:500px;margin:auto;padding-bottom:30px}
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:20px
+}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+  width:46px;height:46px;
+  flex-shrink:0;
+  border-radius:15px;
+  background:linear-gradient(145deg,#fff0b0,#f4a64d 55%,#d77845);
+  display:grid;place-items:center;
+  color:#1b2234;font-size:25px;font-weight:bold
+}
+h1{font-size:21px;margin:0}
+.subtitle{color:var(--muted);font-size:11px}
+.pill{
+  background:#1b2a43;
+  border:1px solid #4b6285;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:12px;
+  color:var(--gold);
+  white-space:nowrap
+}
+.card{
+  background:linear-gradient(145deg,#1c2d4bdf,#111c32f5);
+  border:1px solid #50658a66;
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 18px 45px #0004;
+  margin-bottom:15px
+}
+.q-number{
+  color:var(--gold);
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:8px
+}
+.question{
+  font-size:18px;
+  font-weight:bold;
+  line-height:1.8;
+  margin-bottom:20px
+}
+.options{display:grid;gap:10px}
+.opt-btn{
+  width:100%;
+  padding:14px;
+  background:linear-gradient(145deg,#263957,#1c2b45);
+  color:var(--text);
+  border:1px solid #41577788;
+  border-radius:14px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  text-align:right;
+  transition:all .15s;
+  line-height:1.6
+}
+.opt-btn:active{transform:scale(.98)}
+.opt-btn:disabled{cursor:default}
+.opt-btn.correct{
+  background:linear-gradient(145deg,#17675d,#12473f);
+  border-color:var(--good);
+  color:var(--good)
+}
+.opt-btn.wrong{
+  background:linear-gradient(145deg,#671725,#47121b);
+  border-color:var(--bad);
+  color:var(--bad)
+}
+.stats{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-top:15px;
+  font-size:13px;
+  color:var(--muted)
+}
+#nextBtn{
+  display:none;
+  background:var(--gold);
+  color:#1b2234;
+  border:0;
+  padding:10px 16px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer
+}
+.ad-box{
+  background:linear-gradient(145deg,#2a1f10,#3d2c14);
+  border:1px solid #7a5c28;
+  border-radius:16px;
+  padding:15px;
+  text-align:center;
+  margin-top:15px
+}
+.ad-box p{
+  margin:0 0 10px;
+  font-size:12px;
+  color:var(--gold);
+  line-height:1.8
+}
+.ad-btn{
+  background:linear-gradient(135deg,#ffe79a,#ffbf62);
+  color:#242b3d;
+  border:0;
+  padding:10px 20px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer
+}
+.ad-btn:disabled{opacity:.6;cursor:default}
+#feedback{
+  margin-top:14px;
+  font-size:14px;
+  line-height:1.8;
+  font-weight:bold
+}
+@media(max-width:360px){
+  body{padding:14px 10px}
+  .card{padding:15px}
+  h1{font-size:18px}
+  .pill{padding:7px 9px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+  <div class="brand">
+    <div class="logo">💡</div>
+    <div>
+      <h1>تحدي العباقرة</h1>
+      <div class="subtitle">أسئلة وألغاز • تحدَّ ذكاءك</div>
+    </div>
+  </div>
+  <div class="pill">🏆 النقاط: <span id="score">0</span></div>
+</header>
+
+<section class="card">
+  <div class="q-number" id="qNum">السؤال 1 من 100</div>
+  <div class="question" id="qText">جاري تحميل السؤال...</div>
+  <div class="options" id="optionsBox"></div>
+  <div id="feedback"></div>
+  <div class="stats">
+    <span>التقدم: <span id="progressText">0%</span></span>
+    <button id="nextBtn">السؤال التالي ←</button>
+  </div>
+</section>
+
+<section class="ad-box">
+  <p>📺 مكافأة تجريبية: احصل على نقاط إضافية</p>
+  <button class="ad-btn" id="adBtn">مكافأة (+50 نقطة)</button>
+</section>
+
+</div>
+
+<script>
+const RAW_QUESTIONS = [
+["ما العنصر الذي عدده الذري 74؟",["الرينيوم","التنجستن","الأوزميوم","التنتالوم"],1],
+["ما أعمق بحيرة في العالم؟",["بايكال","تنجانيقا","سوبيريور","فيكتوريا"],0],
+["من صاحب نظرية الانجراف القاري؟",["جيمس هاتون","ألفريد فغنر","تشارلز ليل","إدموند هالي"],1],
+["ما وحدة قياس السعة الكهربائية؟",["هنري","تسلا","فاراد","ويبر"],2],
+["ما أكبر أقمار زحل؟",["أوروبا","غانيميد","تيتان","تريتون"],2],
+["ما عاصمة منغوليا؟",["بيشكيك","أولان باتور","طشقند","دوشنبه"],1],
+["ما العدد الذري للذهب؟",["47","79","78","82"],1],
+["ما الغاز الأكثر وفرة في الغلاف الجوي للأرض؟",["الأكسجين","الأرجون","النيتروجين","ثاني أكسيد الكربون"],2],
+["ما البحر الذي لا تحده سواحل برية؟",["بحر العرب","بحر سارجاسو","بحر البلطيق","بحر المرجان"],1],
+["من مؤلف كتاب المقدمة؟",["ابن رشد","ابن خلدون","الطبري","المسعودي"],1],
+["ما أصغر عظمة في جسم الإنسان؟",["المطرقة","السندان","الركاب","العظم اللامي"],2],
+["ما اسم المجرة التي تقع فيها المجموعة الشمسية؟",["أندروميدا","درب التبانة","مجرة المثلث","سحابة ماجلان الكبرى"],1],
+["ما العنصر الكيميائي الذي رمزه Sb؟",["القصدير","الأنتيمون","الفضة","السيزيوم"],1],
+["ما عاصمة بوتان؟",["كاتماندو","تيمفو","بارو","داكا"],1],
+["من رسم لوحة غيرنيكا؟",["سلفادور دالي","بابلو بيكاسو","كلود مونيه","فرانسيس بيكون"],1],
+["ما أكبر عضو داخلي في جسم الإنسان؟",["الرئة","الكبد","الأمعاء الدقيقة","الكلية"],1],
+["ما اسم العملية التي تصنع بها النباتات غذاءها؟",["التخمر","البناء الضوئي","النتح","التنفس الخلوي"],1],
+["ما الكوكب الذي يومه أطول من سنته؟",["عطارد","الزهرة","المريخ","نبتون"],1],
+["ما عاصمة أوزبكستان؟",["عشق آباد","طشقند","أستانا","سمرقند"],1],
+["من اكتشف البنسلين؟",["لويس باستور","ألكسندر فليمنغ","روبرت كوخ","جوزيف ليستر"],1],
+["ما اسم أعمق نقطة معروفة في المحيطات؟",["خندق بورتوريكو","تشالنجر ديب","خندق جاوة","خندق تونغا"],1],
+["أي حضارة بنت مدينة ماتشو بيتشو؟",["المايا","الإنكا","الأزتك","الأولمك"],1],
+["ما وحدة قياس المقاومة الكهربائية؟",["الأمبير","الفولت","الأوم","الواط"],2],
+["ما العنصر الأكثر وفرة في الكون؟",["الهيليوم","الأكسجين","الهيدروجين","الكربون"],2],
+["من مؤلف رواية الجريمة والعقاب؟",["تولستوي","دوستويفسكي","تشيخوف","غوغول"],1],
+["ما عاصمة ألبانيا؟",["تيرانا","صوفيا","سكوبيه","بودغوريتسا"],0],
+["كم عدد أزواج الكروموسومات لدى الإنسان عادة؟",["22","23","24","46"],1],
+["ما اسم تحول المادة من الصلبة إلى الغاز مباشرة؟",["التكاثف","التسامي","الانصهار","التجمد"],1],
+["أي كوكب يمتلك أقصر سنة؟",["عطارد","الزهرة","الأرض","المريخ"],0],
+["ما عاصمة سورينام؟",["جورج تاون","باراماريبو","كايين","كراكاس"],1],
+["من وضع قوانين الحركة الثلاثة؟",["غاليليو","إسحاق نيوتن","ألبرت أينشتاين","يوهانس كبلر"],1],
+["ما اللغة الرسمية في البرازيل؟",["الإسبانية","البرتغالية","الفرنسية","الإيطالية"],1],
+["ما أصغر عدد أولي؟",["0","1","2","3"],2],
+["أي معدن سائل في درجة حرارة الغرفة تقريبًا؟",["الزئبق","الألومنيوم","الحديد","الفضة"],0],
+["ما عاصمة أيسلندا؟",["أوسلو","ريكيافيك","هلسنكي","تالين"],1],
+["من مؤلف كتاب القانون في الطب؟",["الرازي","ابن سينا","الزهراوي","ابن النفيس"],1],
+["ما أكبر صحراء في العالم من حيث المساحة؟",["الصحراء الكبرى","صحراء غوبي","القارة القطبية الجنوبية","الربع الخالي"],2],
+["أي جزء من الخلية ينتج معظم الطاقة؟",["النواة","الميتوكوندريا","جهاز غولجي","الريبوسوم"],1],
+["ما عاصمة جورجيا؟",["يريفان","تبليسي","باكو","باتومي"],1],
+["ما أقرب نجم إلى الأرض بعد الشمس؟",["سيريوس","بروكسيما قنطورس","فيغا","منكب الجوزاء"],1],
+["كم ضلعًا للشكل العشاري؟",["8","9","10","12"],2],
+["ما العنصر الذي رمزه الكيميائي Fe؟",["الفلور","الحديد","الفرانسيوم","الفسفور"],1],
+["في أي عام سقطت القسطنطينية بيد العثمانيين؟",["1258","1453","1492","1517"],1],
+["ما عاصمة إثيوبيا؟",["نيروبي","أديس أبابا","أسمرة","كمبالا"],1],
+["من صاحب كتاب أصل الأنواع؟",["غريغور مندل","تشارلز داروين","ألفريد والاس","كارل لينيوس"],1],
+["ما أكبر شريان في جسم الإنسان؟",["الشريان الرئوي","الشريان الأبهر","الشريان السباتي","الشريان الفخذي"],1],
+["ما وحدة قياس التردد؟",["الجول","الهرتز","النيوتن","الباسكال"],1],
+["في أي دولة تقع مدينة تمبكتو؟",["النيجر","مالي","تشاد","موريتانيا"],1],
+["ما عاصمة أرمينيا؟",["يريفان","تبليسي","باكو","أنقرة"],0],
+["ما أقرب مجرة كبيرة إلى درب التبانة؟",["مجرة الدوامة","أندروميدا","مجرة السومبريرو","مجرة العين السوداء"],1],
+["من اخترع الديناميت؟",["ألفرد نوبل","توماس إديسون","نيكولا تسلا","جيمس واط"],0],
+["ما أكبر عظمة في جسم الإنسان؟",["القصبة","عظم الفخذ","العضد","الحوض"],1],
+["ما عاصمة لاوس؟",["فينتيان","بنوم بنه","هانوي","يانغون"],0],
+["ما العدد الذي لا يُعد أوليًا ولا مركبًا؟",["0","1","2","3"],1],
+["ما الصبغة التي تمنح النباتات لونها الأخضر؟",["الهيموغلوبين","الكلوروفيل","الميلانين","الكاروتين"],1],
+["من كتب مسرحية هاملت؟",["موليير","شكسبير","غوته","أوسكار وايلد"],1],
+["ما عاصمة مدغشقر؟",["أنتاناناريفو","مابوتو","ليبرفيل","دودوما"],0],
+["ما الغاز الذي تمتصه النباتات في البناء الضوئي؟",["الأكسجين","النيتروجين","ثاني أكسيد الكربون","الهيدروجين"],2],
+["ما الكوكب المعروف بالكوكب الأحمر؟",["الزهرة","المريخ","عطارد","أورانوس"],1],
+["ما اسم العلم الذي يدرس الفطريات؟",["علم الطحالب","علم الفطريات","علم الحشرات","علم الأنسجة"],1],
+["ما عاصمة كرواتيا؟",["بلغراد","زغرب","ليوبليانا","سراييفو"],1],
+["ما ناتج الجذر التربيعي للعدد 2025؟",["35","40","45","55"],2],
+["أي عنصر كيميائي رمزه K؟",["الكالسيوم","البوتاسيوم","الكريبتون","الكوبالت"],1],
+["من صاغ مبدأ عدم اليقين؟",["ماكس بلانك","فيرنر هايزنبرغ","نيلز بور","إرفين شرودنغر"],1],
+["ما عاصمة مولدوفا؟",["كيشيناو","مينسك","ريغا","فيلنيوس"],0],
+["ما أكبر كوكب قزم في حزام الكويكبات؟",["بلوتو","سيريس","إيريس","هاوميا"],1],
+["كم عدد حجرات قلب الإنسان؟",["2","3","4","5"],2],
+["أي دولة تُعرف تاريخيًا ببلاد فارس؟",["العراق","إيران","أفغانستان","أذربيجان"],1],
+["ما الخط الوهمي الذي يقسم الأرض إلى نصفين شمالي وجنوبي؟",["خط غرينتش","خط الاستواء","مدار السرطان","خط التاريخ الدولي"],1],
+["من مؤلف رواية مئة عام من العزلة؟",["بابلو نيرودا","غابرييل غارسيا ماركيز","خورخي بورخيس","ماريو بارغاس يوسا"],1],
+["ما وحدة قياس الضغط في النظام الدولي؟",["الجول","الباسكال","الواط","الكولوم"],1],
+["ما عاصمة نيبال؟",["كاتماندو","تيمفو","داكا","كولومبو"],0],
+["ما المعدن الأساسي في صناعة الفولاذ؟",["النحاس","الحديد","الألومنيوم","الزنك"],1],
+["ما العضو المسؤول عن إنتاج الإنسولين؟",["الكبد","البنكرياس","الطحال","الغدة الدرقية"],1],
+["ما عاصمة ناميبيا؟",["ويندهوك","لوساكا","هراري","غابورون"],0],
+["ما نوع الرابطة التي تنشأ من مشاركة الذرات بالإلكترونات؟",["أيونية","تساهمية","فلزية","هيدروجينية"],1],
+["من وصف الدورة الدموية الصغرى؟",["ابن النفيس","ابن الهيثم","الخوارزمي","جابر بن حيان"],0],
+["كم عدد أضلاع الشكل ذي الاثني عشر ضلعًا؟",["10","11","12","14"],2],
+["ما عاصمة بوتسوانا؟",["غابورون","ويندهوك","ماسايرو","لوساكا"],0],
+["أين توجد معظم طبقة الأوزون؟",["التروبوسفير","الستراتوسفير","الميزوسفير","الإكسوسفير"],1],
+["ما أكبر قمر في المجموعة الشمسية؟",["تيتان","غانيميد","القمر","كاليستو"],1],
+["من وضع الجدول الدوري بصورته التاريخية الأولى الشهيرة؟",["مندليف","لافوازييه","دالتون","رذرفورد"],0],
+["ما عاصمة سلوفاكيا؟",["براغ","براتيسلافا","بودابست","زغرب"],1],
+["ما اسم تحول الغاز إلى سائل؟",["التسامي","التكاثف","التبخر","الترسيب"],1],
+["أي فيتامين يرتبط إنتاجه بتعرض الجلد للشمس؟",["A","B12","C","D"],3],
+["ما عاصمة أوروغواي؟",["أسونسيون","مونتيفيديو","بوينس آيرس","سانتياغو"],1],
+["أي كوكب يشتهر بحلقاته البارزة؟",["المشتري","زحل","أورانوس","نبتون"],1],
+["ما اسم انقسام الخلية إلى خليتين متماثلتين؟",["الانقسام المتساوي","الانقسام الاختزالي","الإخصاب","الطفرة"],0],
+["ما عاصمة السنغال؟",["باماكو","داكار","كوناكري","بانجول"],1],
+["ما العدد الأولي التالي بعد 47؟",["49","51","53","57"],2],
+["ما الجهاز الذي يقيس الضغط الجوي؟",["الترمومتر","البارومتر","الأنيمومتر","الهيجرومتر"],1],
+["ما عاصمة أذربيجان؟",["باكو","يريفان","تبليسي","عشق آباد"],0],
+["من صاحب نظرية النسبية العامة؟",["نيوتن","أينشتاين","فاراداي","ماكسويل"],1],
+["ما أقسى مادة طبيعية على مقياس موس التقليدي؟",["الكوارتز","الياقوت","الألماس","التوباز"],2],
+["ما عاصمة موزمبيق؟",["مابوتو","لواندا","هراري","نيروبي"],0],
+["ما الجزء الدموي الأساسي في عملية التخثر؟",["كريات الدم الحمراء","الصفائح الدموية","خلايا الدم البيضاء","الهيموغلوبين"],1],
+["ما ناتج 17 × 19؟",["313","323","333","343"],1],
+["ما عاصمة طاجيكستان؟",["دوشنبه","طشقند","بيشكيك","ألماتي"],0],
+["ما العلم الذي يدرس الزلازل؟",["علم البراكين","علم الزلازل","علم الأرصاد","علم المحيطات"],1],
+["أي الأعداد التالية يقبل القسمة على 9؟",["734","846","851","923"],1],
+["ما عاصمة غيانا؟",["جورج تاون","باراماريبو","كايين","بورت أوف سبين"],0],
+["ما أقرب نقطة في مدار القمر إلى الأرض؟",["الأوج","الحضيض","الاعتدال","الانقلاب"],1],
+["أي عالم ارتبط اسمه بمبدأ الطفو؟",["أرخميدس","إقليدس","فيثاغورس","ديموقريطس"],0],
+["ما عاصمة بوركينا فاسو؟",["واغادوغو","نيامي","نواكشوط","نجامينا"],0],
+["ما الحمض الموجود في المعدة ويساعد على الهضم؟",["حمض الكبريتيك","حمض الهيدروكلوريك","حمض النيتريك","حمض الخليك"],1],
+["ما أكبر غدة في جسم الإنسان؟",["الغدة الدرقية","الكبد","البنكرياس","الغدة النخامية"],1],
+["ما عاصمة قيرغيزستان؟",["بيشكيك","دوشنبه","أستانا","طشقند"],0],
+["أي الأعداد التالية مربع كامل؟",["180","196","210","230"],1],
+["ما العلم الذي يدرس أصل الكلمات وتطور معانيها؟",["علم الأصوات","علم الاشتقاق","علم البلاغة","علم العروض"],1]
+];
+
+const QUESTIONS = RAW_QUESTIONS.map(([q, options, answer]) => ({
+  q,
+  options,
+  answer
+}));
+
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let currentQuestion = null;
+let adRewardClaimed = false;
+
+const qNumEl = document.getElementById('qNum');
+const qTextEl = document.getElementById('qText');
+const optionsBox = document.getElementById('optionsBox');
+const scoreEl = document.getElementById('score');
+const progressText = document.getElementById('progressText');
+const nextBtn = document.getElementById('nextBtn');
+const adBtn = document.getElementById('adBtn');
+const feedbackEl = document.getElementById('feedback');
+
+function shuffleQuestion(question) {
+  const options = question.options.map((text, index) => ({
+    text,
+    correct: index === question.answer
   }));
 
-  // خلط عشوائي للخيارات
-  for (let i = answers.length - 1; i > 0; i--) {
+  for (let i = options.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [answers[i], answers[j]] = [answers[j], answers[i]];
+    [options[i], options[j]] = [options[j], options[i]];
   }
 
   return {
-    ...question,
-    answers: answers.map(answer => answer.text),
-    correctIndex: answers.findIndex(answer => answer.correct)
+    q: question.q,
+    options: options.map(option => option.text),
+    answer: options.findIndex(option => option.correct)
   };
 }
 
-// مثال على سؤال
-const question = {
-  question: "ما أعمق بحيرة في العالم؟",
-  answers: [
-    "بحيرة فيكتوريا",
-    "بحيرة بايكال",
-    "بحيرة سوبيريور",
-    "بحيرة تنجانيقا"
-  ],
-  correctIndex: 1
+function loadQuestion() {
+  answered = false;
+  nextBtn.style.display = 'none';
+  feedbackEl.textContent = '';
+
+  currentQuestion = shuffleQuestion(QUESTIONS[currentIndex]);
+
+  qNumEl.textContent =
+    `السؤال ${currentIndex + 1} من ${QUESTIONS.length}`;
+
+  qTextEl.textContent = currentQuestion.q;
+
+  progressText.textContent =
+    Math.round((currentIndex / QUESTIONS.length) * 100) + '%';
+
+  optionsBox.innerHTML = '';
+
+  currentQuestion.options.forEach((option, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = option;
+    btn.onclick = () => checkAnswer(index, btn);
+    optionsBox.appendChild(btn);
+  });
+}
+
+function checkAnswer(selectedIndex, btn) {
+  if (answered) return;
+  answered = true;
+
+  const allBtns = optionsBox.querySelectorAll('.opt-btn');
+  const correctIndex = currentQuestion.answer;
+
+  allBtns.forEach(button => {
+    button.disabled = true;
+  });
+
+  if (selectedIndex === correctIndex) {
+    btn.classList.add('correct');
+    score += 10;
+    scoreEl.textContent = score;
+    feedbackEl.textContent = 'إجابة صحيحة! +10 نقاط 🎉';
+    feedbackEl.style.color = 'var(--good)';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[correctIndex].classList.add('correct');
+    feedbackEl.textContent = 'إجابة خاطئة! الإجابة الصحيحة باللون الأخضر.';
+    feedbackEl.style.color = 'var(--bad)';
+  }
+
+  progressText.textContent =
+    Math.round(((currentIndex + 1) / QUESTIONS.length) * 100) + '%';
+
+  nextBtn.textContent =
+    currentIndex === QUESTIONS.length - 1
+      ? 'عرض النتيجة'
+      : 'السؤال التالي ←';
+
+  nextBtn.style.display = 'block';
+}
+
+nextBtn.onclick = () => {
+  currentIndex++;
+
+  if (currentIndex < QUESTIONS.length) {
+    loadQuestion();
+    return;
+  }
+
+  showResults();
 };
 
-const randomizedQuestion = shuffleAnswers(question);
+function showResults() {
+  qNumEl.textContent = 'انتهى التحدي!';
+  qTextEl.textContent =
+    `حصلت على ${score} نقطة من أصل ${QUESTIONS.length * 10} نقطة.`;
 
-console.log(randomizedQuestion);
+  optionsBox.innerHTML = '';
+  feedbackEl.textContent = 'يعطيك العافية! تقدر تعيد التحدي وتحاول تحسن نتيجتك.';
+  feedbackEl.style.color = 'var(--gold)';
+
+  const restartBtn = document.createElement('button');
+  restartBtn.className = 'opt-btn';
+  restartBtn.style.textAlign = 'center';
+  restartBtn.textContent = 'إعادة اللعب ↺';
+  restartBtn.onclick = restartGame;
+
+  optionsBox.appendChild(restartBtn);
+  progressText.textContent = '100%';
+  nextBtn.style.display = 'none';
+}
+
+function restartGame() {
+  currentIndex = 0;
+  score = 0;
+  scoreEl.textContent = '0';
+  loadQuestion();
+}
+
+adBtn.onclick = () => {
+  if (adRewardClaimed) {
+    alert('حصلت على المكافأة التجريبية بالفعل.');
+    return;
+  }
+
+  adRewardClaimed = true;
+  score += 50;
+  scoreEl.textContent = score;
+  adBtn.disabled = true;
+  adBtn.textContent = 'تمت إضافة 50 نقطة';
+  alert('تمت إضافة 50 نقطة تجريبية إلى رصيدك.');
+};
+
+loadQuestion();
+</script>
+</body>
+</html>
